@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LiveQuestion{% endblock %}
+
+{% block body %}
+{% if app.user %}
+    <div class="row">
+        <div class="col-10 offset-1">
+            {% for question in questions %}
+                <div class="card mb-3">
+                    <div class="card-body bg-light">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        {{ question.answers|length }}
+                                        <br>
+                                        <small>Réponses</small>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        {{ question.views }}
+                                        <br>
+                                        <small>Vues</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <h5 class="card-title"><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h5>
+                                <p class="card-text text-muted small">posée par {{ question.user.username }} |  {{ question.created|date("m/d/Y h:i") }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center alert alert-livequestion">Pas de questions !</div>
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+<div class="card mb-3">
+    <div class="card-body bg-light">
+        <p>Bienvenu sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
+    </div>
+</div>       
+{% endif %}
+{% endblock %}
