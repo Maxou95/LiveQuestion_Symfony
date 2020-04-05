@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil de l'utilisateur {{user.username}}{% endblock %}
+
+
+{% block navitem %}
+    {% if app.user.id == user.id %}
+        <li class="nav-item">
+            <a class="nav-link" href='{{ path('app_user_update', { 'id': app.user.id })}}'>Modifier mon profil</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="card mb-3">
+    <div class="card-body bg-light">
+        <div class="row">
+            <div class="col text-center">
+                <img src="{{ asset('images/profil-picture-illustration.png') }}" class="profil-picture"></img>
+            </div>
+            <div class="col-9">
+                <h6>Pseudo : {{user.username}}</h6>
+                <h6>Genre : {{user.gender}}</h6>
+                <h6>Email : {{user.email}}</h6>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% for question in questions %}
+<div class="card mb-3">
+    <div class="card-body bg-light">
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-6 text-center">
+                        {{ question.answers|length }}
+                        <br>
+                        <small>Réponses</small>
+                    </div>
+                    <div class="col-6 text-center">
+                        {{ question.views }}
+                        <br>
+                        <small>Vues</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <h5 class="card-title"><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h5>
+                <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("m/d/Y h:i") }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center alert alert-livequestion">Pas de questions !</div>
+{% endfor %}
+
+{% endblock %}

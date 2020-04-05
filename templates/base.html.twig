@@ -25,6 +25,11 @@
                                 <a class="nav-link" href="{{ path('app_question_ask') }}">Poser une question</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_user', { 'id': app.user.id }) }}">Mon profil</a>
+                            </li>
+                            {% block navitem %}
+                            {% endblock %}
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
                             </li>
                         {% else %}

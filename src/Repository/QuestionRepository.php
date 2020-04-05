@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Exception\RetryableException;
 
 /**
  * @method Question|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,6 +20,16 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
+    public function findByUserId($value)
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.user = :val')
+            ->setParameter('val', $value)
+            ->orderBy('q.created', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    } 
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */

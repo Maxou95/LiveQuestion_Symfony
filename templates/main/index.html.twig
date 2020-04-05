@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-9">
                                 <h5 class="card-title"><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h5>
-                                <p class="card-text text-muted small">posée par {{ question.user.username }} |  {{ question.created|date("m/d/Y h:i") }}</p>
+                                <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("m/d/Y h:i") }}</p>
                             </div>
                         </div>
                     </div>

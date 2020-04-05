@@ -31,7 +31,7 @@
                         <p class="card-text">{{ answer.body }}</p>
                     </div>
                     <div class="card-footer text-muted small">
-                        {{ answer.user.username }} - {{ answer.created|date("m/d/Y h:i") }}
+                        <a href="{{ path('app_user', { 'id': answer.user.id }) }}">{{ answer.user.username }}</a> - {{ answer.created|date("m/d/Y h:i") }}
                     </div>
                 </div>
                 {% endfor %}
