@@ -5,12 +5,12 @@
 {% block body %}
     <h3 class="text-center"> {{ question.question }}</h3>
 
-    {% if question.body %}
+    {% if question.category %}
     <div class="row">
         <div class="col-8 offset-2">
             <div class="card">
                 <div class="card-body">
-                    <p class="card-text">{{ question.body }}</p>
+                    <p class="card-text">{{ question.category }}</p>
                 </div>
                 <div class="card-footer text-muted small">
                     {{ question.created|date("m/d/Y h:i a") }}
@@ -28,7 +28,7 @@
                 {% for answer in question.answers %}
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-text">{{ answer.body }}</p>
+                        <p class="card-text">{{ answer.category }}</p>
                     </div>
                     <div class="card-footer text-muted small">
                         <a href="{{ path('app_user', { 'id': answer.user.id }) }}">{{ answer.user.username }}</a> - {{ answer.created|date("m/d/Y h:i") }}

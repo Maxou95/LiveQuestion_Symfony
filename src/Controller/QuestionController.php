@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Answer;
 use App\Entity\Question;
+use App\Entity\QuestionLike;
 use App\Form\AnswerType;
 use App\Form\QuestionType;
+use App\Repository\QuestionLikeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class QuestionController extends AbstractController
 {
@@ -75,5 +79,43 @@ class QuestionController extends AbstractController
         return $this->render('question/ask.html.twig', [
             'questionForm' => $form->createView()
         ]);
+    }
+
+     /**
+     * @Route("/question/{id}/like", name="app_question_like", requirements={"id"="\d+"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function like(Question $question, EntityManagerInterface $entityManager, QuestionLikeRepository $likes) : Response
+    {
+        $user=$this->getUser();
+
+        if($question->isLikedByUser($user)){
+            $like = $likes->findOneBy([
+                'question' => $question,
+                'user' => $user
+            ]);
+            $entityManager->remove($like);
+            $entityManager->flush();
+            
+            return $this->json([
+                'code' => 200,
+                'message' => "Le like a bien été supprimé",
+                'likes' => $likes->count(['question' => $question])
+            ], 200);
+
+        }
+
+        $like = new QuestionLike();
+        $like->setQuestion($question)
+            ->setUser($user);
+
+        $entityManager->persist($like);
+        $entityManager->flush();
+
+        return $this->json([
+            'code' => 200,
+            'message' => "Le like a bien été ajouté",
+            'likes' => $likes->count(['question' => $question])
+        ], 200);
     }
 }

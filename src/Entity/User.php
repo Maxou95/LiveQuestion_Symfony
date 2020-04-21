@@ -9,9 +9,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints;
 
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"username"}, message="Ce nom d'utilisateur est déja pris.")
+ * @UniqueEntity(fields={"email"}, message="Cette adresse email est déja utilisée par un autre compte.")
  */
 class User implements UserInterface
 {
@@ -29,11 +31,6 @@ class User implements UserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private $gender;
-
-    /**
      * @ORM\Column(type="string", length=180)
      * Constraints\NotBlank(message="Veuillez saisir une addresse email valide.")
      * Constraints\Email(message="Veuillez saisir une addresse email valide.")
@@ -41,7 +38,7 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="array")
      */
     private $roles = [];
 
@@ -61,10 +58,21 @@ class User implements UserInterface
      */
     private $answers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\QuestionLike", mappedBy="user")
+     */
+    private $questionLikes;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Profile", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $profile;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
         $this->answers = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,7 +108,7 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles = ['ROLE_USER'];
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -210,14 +218,50 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getGender(): ?string
+    /**
+     * @return Collection|QuestionLike[]
+     */
+    public function getQuestionsLikes(): Collection
     {
-        return $this->gender;
+        return $this->questionLikes;
     }
 
-    public function setGender(string $gender): self
+    public function addQuestionsLike(QuestionLike $questionLikes): self
     {
-        $this->gender = $gender;
+        if (!$this->questionLikes->contains($questionLikes)) {
+            $this->questionLikes[] = $questionLikes;
+            $questionLikes->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionsLike(QuestionLike $questionLikes): self
+    {
+        if ($this->questionLikes->contains($questionLikes)) {
+            $this->questionLikes->removeElement($questionLikes);
+            // set the owning side to null (unless already changed)
+            if ($questionLikes->getUser() === $this) {
+                $questionLikes->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProfile(): ?Profile
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(Profile $profile): self
+    {
+        $this->profile = $profile;
+
+        // set the owning side of the relation if necessary
+        if ($profile->getUser() !== $this) {
+            $profile->setUser($this);
+        }
 
         return $this;
     }
