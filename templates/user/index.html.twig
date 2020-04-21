@@ -12,6 +12,11 @@
 {% endblock %}
 
 {% block body %}
+{% for message in app.flashes('success')%}
+<div class="alert alert-livequestion">
+    {{message}}
+</div>
+{% endfor %}
 <div class="card mb-3">
     <div class="card-body bg-light">
         <div class="row">
@@ -19,14 +24,17 @@
                 <img src="{{ asset('images/profil-picture-illustration.png') }}" class="profil-picture"></img>
             </div>
             <div class="col-9">
-                <h6>Pseudo : {{user.username}}</h6>
-                <h6>Genre : {{user.gender}}</h6>
-                <h6>Email : {{user.email}}</h6>
+                <h6><strong>Pseudo : </strong>{{user.username}}</h6>
+                <h6><strong>Email : </strong>{{user.email}}</h6>
             </div>
         </div>
     </div>
 </div>
-
+<div class="card mb-3">
+    <div class="card-body bg-light text-center">
+        <h5>Dernières questions</h5>
+    </div>
+</div>
 
 {% for question in questions %}
 <div class="card mb-3">

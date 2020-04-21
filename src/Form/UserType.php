@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -14,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Email;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 
 class UserType extends AbstractType
@@ -32,15 +32,6 @@ class UserType extends AbstractType
                         'minMessage' => "Votre nom d'utilisateur doit comporter au minimum {{ limit }} caractères",
                         'max' => 4096,
                     ]),
-                ],
-            ])
-            ->add('gender', ChoiceType::class, [
-                'label' => "Genre",
-                'choices'  => [
-                    'Homme' => 'homme',
-                    'Femme' => 'femme',
-                    'Non-binaire' => 'non-binaire',
-                    'Pélican' => 'pélican',
                 ],
             ])
             ->add('email', EmailType::class, [
@@ -65,6 +56,7 @@ class UserType extends AbstractType
                 'second_options' => ['label' => 'Confirmer mot de passe'],
                 'invalid_message' => 'Les mots de passe ne correspondent pas.'
             ])
+            ->add('profile', ProfileType::class)
         ;
     }
 

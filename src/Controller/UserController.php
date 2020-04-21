@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Profile;
 use App\Entity\User;
+use App\Form\ProfileType;
 use App\Form\UserType;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,6 +37,7 @@ class UserController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash('success',"Votre profil a été modifié.");
             return $this->redirectToRoute("app_user", [
                 "id" => $user->getId()
             ]);
@@ -46,4 +49,28 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/user/profile/{id}", name="app_profil_update", requirements={"id"="\d+"})
+     */
+    public function profil(Profile $profile, Request $request, EntityManagerInterface $entityManager)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(ProfileType::class, $profile);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $entityManager->persist($profile);
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('success',"Votre profil a été modifié.");
+            return $this->redirectToRoute("app_user", [
+                "id" => $user->getId()
+            ]);
+        }
+
+        return $this->render('user/profil.html.twig', [
+            "profile" => $profile,
+            "form" => $form->createView()
+        ]);
+    }
 }

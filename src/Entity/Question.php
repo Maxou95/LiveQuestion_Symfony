@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +33,7 @@ class Question
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $body;
+    private $category;
 
     /**
      * @ORM\Column(type="integer", options={"default": "0"})
@@ -49,9 +50,15 @@ class Question
      */
     private $answers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\QuestionLike", mappedBy="question", orphanRemoval=true)
+     */
+    private $questionLikes;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,14 +90,14 @@ class Question
         return $this;
     }
 
-    public function getBody(): ?string
+    public function getCategory(): ?string
     {
-        return $this->body;
+        return $this->category;
     }
 
-    public function setBody(?string $body): self
+    public function setCategory(?string $category): self
     {
-        $this->body = $body;
+        $this->category = $category;
 
         return $this;
     }
@@ -147,6 +154,46 @@ class Question
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|QuestionLike[]
+     */
+    public function getQuestionLikes(): Collection
+    {
+        return $this->questionLikes;
+    }
+
+    public function addQuestionLike(QuestionLike $questionLikes): self
+    {
+        if (!$this->questionLikes->contains($questionLikes)) {
+            $this->questionLikes[] = $questionLikes;
+            $questionLikes->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionLike(QuestionLike $questionLikes): self
+    {
+        if ($this->questionLikes->contains($questionLikes)) {
+            $this->questionLikes->removeElement($questionLikes);
+            // set the owning side to null (unless already changed)
+            if ($questionLikes->getQuestion() === $this) {
+                $questionLikes->setQuestion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isLikedByUser(User $user) : bool
+    {
+        foreach($this->questionLikes as $like) {
+            if($like->getUser() === $user) return true;
+        }
+
+        return false;
     }
 
 }

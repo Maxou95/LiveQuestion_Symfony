@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace d'administration{% endblock %}
+
+{% block body %}
+{% for message in app.flashes('success')%}
+<div class="text-center alert alert-livequestion">
+    {{message}}
+</div>
+{% endfor %}
+{% if app.user %}
+<div class="row">
+    <div class="col-10 offset-1">
+        {% for question in questions %}
+            <div class="card mb-3">
+                <div class="card-body bg-light">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-6 text-center">
+                                    {{ question.answers|length }}
+                                    <br>
+                                    <small>Réponses</small>
+                                </div>
+                                <div class="col-6 text-center">
+                                    {{ question.views }}
+                                    <br>
+                                    <small>Vues</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <h5 class="card-title"><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h5>
+                            <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("m/d/Y h:i") }}</p>
+                        </div>
+                        <div class="col">
+                            <form method="POST" class="btn livequestion" action="{{path('admin_delete_question',{'id':question.id})}}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette question ?')">
+                                <input type="hidden" name="_method" value="delete">
+                                <input type="hidden" name="_token" value="{{csrf_token('delete' ~ question.id)}}">
+                                <input type="submit" class="btn livequestion" value="Supprimer">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center alert alert-livequestion">Pas de questions !</div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="card mb-3">
+<div class="card-body bg-light">
+    <p>Bienvenu sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
+</div>
+</div>       
+{% endif %}
+{% endblock %}
