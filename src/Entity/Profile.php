@@ -109,6 +109,7 @@ class Profile implements Serializable
     public function __construct()
     {
         $this->image = new EmbeddedFile();
+        $this->updatedAt= new \DateTimeImmutable();
     }
 
     public function getId(): ?int

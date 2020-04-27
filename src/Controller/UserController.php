@@ -5,23 +5,27 @@ namespace App\Controller;
 use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\ProfileType;
+use App\Form\UserSearchType;
 use App\Form\UserType;
 use App\Repository\QuestionRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserController extends AbstractController
 {
     /**
      * @Route("/user/{id}", name="app_user", requirements={"id"="\d+"})
      */
-    public function index(User $user, QuestionRepository $questionRepository)
+    public function view(User $user, QuestionRepository $questionRepository)
     {
         $questions = $questionRepository->findByUserId($user->getId());
-        return $this->render('user/index.html.twig', [
+        
+        return $this->render('user/view.html.twig', [
             "user" => $user,
             "questions" => $questions,
         ]);
@@ -47,6 +51,54 @@ class UserController extends AbstractController
             "user" => $user,
             "form" => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/user/delete/{id}", name="app_user_delete", requirements={"id"="\d+"})
+     */
+    public function delete(User $user, Request $request, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, SessionInterface $session){
+        if($this->isCsrfTokenValid("delete".$user->getId(), $request->get("_token"))){
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $this->addFlash('success','Votre profil a été supprimé.');
+            $tokenStorage->setToken(null);
+            $session->invalidate();
+            
+            return $this->redirectToRoute("main");
+        }
+    }
+
+    /**
+     * @Route("/users", name="app_users")
+     */
+    public function index(UserRepository $userRepository, Request $request)
+    {
+        $searchForm = $this->createForm(UserSearchType::class);
+        $searchForm->handleRequest($request);
+        $users = $userRepository->findAll();
+
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+ 
+            $search = $searchForm->getData()->getUsername();
+
+            $datas = $userRepository->search($search);
+
+
+            if ($datas == null) {
+                $this->addFlash('erreur', 'Aucune question ne correspond à vos critères de recherche');
+            }
+
+            return $this->render('user/index.html.twig', [
+                'searchForm' => $searchForm->createView(),
+                "users" => $datas,
+            ]);
+        }
+        
+        return $this->render('user/index.html.twig', [
+            'searchForm' => $searchForm->createView(),
+            "users" => $users,
+        ]);
+
     }
 
     /**

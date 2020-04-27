@@ -22,7 +22,7 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => "Nom d'utilisateur",
+                'label' => "Nom d'utilisateur :",
                 'constraints' => [
                     new NotBlank([
                         'message' => "Veuillez entrer un nom d'utilisateur",
@@ -35,6 +35,7 @@ class UserType extends AbstractType
                 ],
             ])
             ->add('email', EmailType::class, [
+                'label' => "Adresse email :",
                 'constraints' => [
                     new Email(['message' => 'Veuillez saisir une addresse email valide.'])
                 ]
@@ -52,11 +53,13 @@ class UserType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-                'first_options' => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmer mot de passe'],
+                'first_options' => ['label' => 'Mot de passe :'],
+                'second_options' => ['label' => 'Confirmer mot de passe :'],
                 'invalid_message' => 'Les mots de passe ne correspondent pas.'
             ])
-            ->add('profile', ProfileType::class)
+            ->add('profile', ProfileType::class, [
+                'label' => 'Informations suplémentaires (facultatif) :'
+            ])
         ;
     }
 
