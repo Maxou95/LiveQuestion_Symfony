@@ -6,6 +6,13 @@
 {% if app.user %}
     <div class="row">
         <div class="col-10 offset-1">
+            <div class="card mb-3">
+                <div class="card-body bg-light">
+                    {{form_start(searchForm)}}
+                        {{form_widget(searchForm)}}
+                    {{form_end(searchForm)}}
+                </div>
+            </div>
             {% for question in questions %}
                 <div class="card mb-3">
                     <div class="card-body bg-light">
@@ -26,26 +33,29 @@
                             </div>
                             <div class="col-9">
                                 <h5 class="card-title"><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h5>
-                                <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("m/d/Y h:i") }}</p>
+                                <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("m/d/Y h:i") }} | <a href="{{ path('app_question_like', {'id': question.id })}}" class="btn btn-link js-question-like">
+                                    <span class="js-question-likes">{{ question.questionLikes | length }}</span>
+                                    {% if question.isLikedByUser(app.user) %}
+                                        <i class="fas fa-thumbs-up"></i>
+                                    {% else %}
+                                        <i class="far fa-thumbs-up"></i>
+                                    {% endif %}
+                                </a></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <a href="{{ path('app_question_like', {'id': question.id })}}" class="btn btn-link js-question-like">
-                    <span class="js-question-likes">{{ question.questionLikes | length }}</span>
-                    {% if question.isLikedByUser(app.user) %}
-                        <i class="fas fa-thumbs-up"></i>
-                    {% else %}
-                        <i class="far fa-thumbs-up"></i>
-                    {% endif %}
-                </a>
             {% else %}
                 <div class="text-center alert alert-livequestion">Pas de questions !</div>
             {% endfor %}
         </div>
     </div>
 {% else %}
+{% for message in app.flashes('success')%}
+<div class="text-center alert alert-livequestion">
+    {{message}}
+</div>
+{% endfor %}
 <div class="card mb-3">
     <div class="card-body bg-light">
         <p>Bienvenu sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>

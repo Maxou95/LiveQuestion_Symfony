@@ -13,7 +13,15 @@
                     <p class="card-text">{{ question.category }}</p>
                 </div>
                 <div class="card-footer text-muted small">
-                    {{ question.created|date("m/d/Y h:i a") }}
+                    {{ question.created|date("m/d/Y h:i a") }} |
+                    <a href="{{ path('app_question_like', {'id': question.id })}}" class="btn btn-link js-question-like">
+                        <span class="js-question-likes">{{ question.questionLikes | length }}</span>
+                        {% if question.isLikedByUser(app.user) %}
+                            <i class="fas fa-thumbs-up"></i>
+                        {% else %}
+                            <i class="far fa-thumbs-up"></i>
+                        {% endif %}
+                    </a>
                 </div>
             </div>
         </div>
@@ -28,7 +36,7 @@
                 {% for answer in question.answers %}
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-text">{{ answer.category }}</p>
+                        <p class="card-text">{{ answer.body }}</p>
                     </div>
                     <div class="card-footer text-muted small">
                         <a href="{{ path('app_user', { 'id': answer.user.id }) }}">{{ answer.user.username }}</a> - {{ answer.created|date("m/d/Y h:i") }}
@@ -48,4 +56,32 @@
         </div>
     {% endif %}
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        
+        function onClickBtnLike(event){
+            event.preventDefault();
+
+            const url = this.href;
+            const likeCount = this.querySelector('span.js-question-likes')
+            const icone = this.querySelector('i');
+
+            axios.get(url).then(function(response){
+                likeCount.textContent = response.data.likes;
+                if(icone.classList.contains('fas')) {
+                    icone.classList.replace('fas','far');
+                } else {
+                    icone.classList.replace('far','fas');
+                }  
+            });
+        }
+
+        document.querySelectorAll('a.js-question-like').forEach(function(link){
+            link.addEventListener('click', onClickBtnLike)
+        })
+
+    </script>
 {% endblock %}

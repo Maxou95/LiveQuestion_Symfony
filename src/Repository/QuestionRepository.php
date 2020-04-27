@@ -30,6 +30,14 @@ class QuestionRepository extends ServiceEntityRepository
             ->getResult()
         ;
     } 
+
+    public function search($question) {
+        return $this->createQueryBuilder('question')
+            ->andWhere('question.question LIKE :question')
+            ->setParameter('question', '%'.$question.'%')
+            ->getQuery()
+            ->execute();
+    }
     // /**
     //  * @return Question[] Returns an array of Question objects
     //  */
