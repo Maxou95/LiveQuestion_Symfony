@@ -8,8 +8,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -38,7 +36,6 @@ class ProfileType extends AbstractType
                 'Homme' => 'homme',
                 'Femme' => 'femme',
                 'Non-binaire' => 'non-binaire',
-                'Pélican' => 'pélican',
                 ],
                 'required'   => false,
                 'empty_data' => null,

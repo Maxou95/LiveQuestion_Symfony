@@ -5,16 +5,41 @@
 {% block body %}
 {% if app.user %}
     <div class="row">
-        <div class="col-10 offset-1">
-            <div class="card mb-3">
-                <div class="card-body bg-light">
-                    {{form_start(searchForm)}}
-                        {{form_widget(searchForm)}}
-                    {{form_end(searchForm)}}
-                </div>
-            </div>
+        <div class="">
+            {{form_start(searchForm)}}
+                {{form_widget(searchForm)}}
+            {{form_end(searchForm)}}
             {% for question in questions %}
-                <div class="card mb-3">
+                <div class="question">
+                    
+                    <div class="question-header">
+                        <a href="{{ path('app_user', { 'id': question.user.id }) }}">
+                        {% if question.user.profile.image.name is not null %}
+                            <img src="{{ asset(vich_uploader_asset(question.user.profile, 'imageFile')) }}" height="40" width="40" alt="">
+                        {% else %}
+                            <img src="{{ asset('images/profil-picture-illustration.png') }}" height="40" width="40" alt="">
+                        {% endif %}
+                        </a>
+                        <p class="question-info"><a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username}}</a> | {{ question.created|date("d/m/Y h:i") }}</p>
+                    </div>
+                    <div class="question-body">
+                        <h3><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h3>
+                    </div>
+                    <div class="question-footer">
+                        <p>
+                            {{ question.views }} | {{ question.answers|length }} | 
+                            <a href="{{ path('app_question_like', {'id': question.id })}}" class="btn btn-link js-question-like">
+                                <span class="js-question-likes">{{ question.questionLikes | length }}</span>
+                                {% if question.isLikedByUser(app.user) %}
+                                    <i class="fas fa-thumbs-up"></i>
+                                {% else %}
+                                    <i class="far fa-thumbs-up"></i>
+                                {% endif %}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <!-- <div class="card mb-3">
                     <div class="card-body bg-light">
                         <div class="row">
                             <div class="col">
@@ -33,7 +58,7 @@
                             </div>
                             <div class="col-9">
                                 <h5 class="card-title"><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h5>
-                                <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("m/d/Y h:i") }} | <a href="{{ path('app_question_like', {'id': question.id })}}" class="btn btn-link js-question-like">
+                                <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("d/m/Y h:i") }} | <a href="{{ path('app_question_like', {'id': question.id })}}" class="btn btn-link js-question-like">
                                     <span class="js-question-likes">{{ question.questionLikes | length }}</span>
                                     {% if question.isLikedByUser(app.user) %}
                                         <i class="fas fa-thumbs-up"></i>
@@ -44,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             {% else %}
                 <div class="text-center alert alert-livequestion">Pas de questions !</div>
             {% endfor %}
@@ -58,7 +83,7 @@
 {% endfor %}
 <div class="card mb-3">
     <div class="card-body bg-light">
-        <p>Bienvenu sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
+        <p>Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
     </div>
 </div>       
 {% endif %}

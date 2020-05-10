@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification des informations de connexion {% endblock %}
+
+{% block body %}
+{% if app.user.id == user.id %}
+<div class="row">
+    <div class="col-6 offset-3">
+
+        <div class="card bg-light">
+            <div class="card-body">
+                <h1 class="h3 mb-3 font-weight-normal text-center">Modification des informations de connexion</h1>
+
+                {{ form_start(form) }}
+                    {{ form_row(form) }}
+                    <div class="row buttons">
+                        <a href="{{path('app_user', { 'id': user.id })}}" class="btn btn-light col-6" >Annuler</a>
+                        <input type="submit" value="Appliquer les modification" class="btn livequestion btn-block col-6"></input>
+                    </div>
+                {{ form_end(form) }}
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center alert alert-livequestion">Vous n'êtes pas autorisé(e) à modifier ces informations.</div>
+{% endif %}
+
+{% endblock %}

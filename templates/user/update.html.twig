@@ -3,6 +3,7 @@
 {% block title %}Modification du profil {% endblock %}
 
 {% block body %}
+{% if app.user.id == user.id %}
 <div class="row">
     <div class="col-6 offset-3">
 
@@ -11,10 +12,7 @@
                 <h1 class="h3 mb-3 font-weight-normal text-center">Modification du profil</h1>
 
                 {{ form_start(form) }}
-                    {{ form_row(form.username) }}
-                    {{ form_row(form.email) }}
-                    {{ form_row(form.plainPassword) }}
-                    {{ form_row(form.profile)}}
+                    {{ form_row(form, { 'label': ' ' }) }}
                     <div class="row buttons">
                         <a href="{{path('app_user', { 'id': user.id })}}" class="btn btn-light col-6" >Annuler</a>
                         <input type="submit" value="Appliquer les modification" class="btn livequestion btn-block col-6"></input>
@@ -26,7 +24,9 @@
         </div>
     </div>
 </div>
-
+{% else %}
+<div class="text-center alert alert-livequestion">Vous n'êtes pas autorisé(e) à modifier ces informations.</div>
+{% endif %}
 <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
     <script>
         $('.custom-file-input').on('change', function(event) {
