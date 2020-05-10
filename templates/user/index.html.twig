@@ -16,10 +16,10 @@
         <div class="card-body bg-light">
             <div class="row">
                 <div class="col-1">
-                    {% if user.profile.image %}
+                    {% if user.profile.image.name is not null %}
                     <img src="{{ asset(vich_uploader_asset(user.profile, 'imageFile')) }}" height="50" width="50" alt="">
                     {% else %}
-                    <p>A modifié</p>
+                    <img src="{{ asset('images/profil-picture-illustration.png') }}" height="50" width="50" alt="">
                     {% endif %}
                 </div>
                 <div class="col-5">

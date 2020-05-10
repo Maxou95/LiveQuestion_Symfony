@@ -6,7 +6,7 @@ use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\ProfileType;
 use App\Form\UserSearchType;
-use App\Form\UserType;
+use App\Form\UserUpdateType;
 use App\Repository\QuestionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,6 +18,38 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class UserController extends AbstractController
 {
+    /**
+     * @Route("/users", name="app_users")
+     */
+    public function index(UserRepository $userRepository, Request $request)
+    {
+        $searchForm = $this->createForm(UserSearchType::class);
+        $searchForm->handleRequest($request);
+        $users = $userRepository->findAll();
+
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+ 
+            $search = $searchForm->getData()->getUsername();
+
+            $datas = $userRepository->search($search);
+
+
+            if ($datas == null) {
+                $this->addFlash('erreur', 'Aucun utilisateur ne correspond à vos critères de recherche');
+            }
+
+            return $this->render('user/index.html.twig', [
+                'searchForm' => $searchForm->createView(),
+                "users" => $datas,
+            ]);
+        }
+        
+        return $this->render('user/index.html.twig', [
+            'searchForm' => $searchForm->createView(),
+            "users" => $users,
+        ]);
+
+    }
     /**
      * @Route("/user/{id}", name="app_user", requirements={"id"="\d+"})
      */
@@ -35,7 +67,7 @@ class UserController extends AbstractController
      * @Route("/user/update/{id}", name="app_user_update", requirements={"id"="\d+"})
      */
     public function update(User $user, Request $request, EntityManagerInterface $entityManager){
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(ProfileType::class, $user->getProfile());
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
@@ -48,6 +80,28 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/update.html.twig', [
+            "user" => $user,
+            "form" => $form->createView()
+        ]);
+    }
+    
+    /**
+     * @Route("/user/update-logs/{id}", name="app_user_updatelogs", requirements={"id"="\d+"})
+     */
+    public function updateLogs(User $user, Request $request, EntityManagerInterface $entityManager){
+        $form = $this->createForm(UserUpdateType::class, $user);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('success',"Vos informations de connexions ont été modifiées.");
+            return $this->redirectToRoute("app_user", [
+                "id" => $user->getId()
+            ]);
+        }
+
+        return $this->render('user/updatelogs.html.twig', [
             "user" => $user,
             "form" => $form->createView()
         ]);
@@ -66,63 +120,5 @@ class UserController extends AbstractController
             
             return $this->redirectToRoute("main");
         }
-    }
-
-    /**
-     * @Route("/users", name="app_users")
-     */
-    public function index(UserRepository $userRepository, Request $request)
-    {
-        $searchForm = $this->createForm(UserSearchType::class);
-        $searchForm->handleRequest($request);
-        $users = $userRepository->findAll();
-
-        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
- 
-            $search = $searchForm->getData()->getUsername();
-
-            $datas = $userRepository->search($search);
-
-
-            if ($datas == null) {
-                $this->addFlash('erreur', 'Aucune question ne correspond à vos critères de recherche');
-            }
-
-            return $this->render('user/index.html.twig', [
-                'searchForm' => $searchForm->createView(),
-                "users" => $datas,
-            ]);
-        }
-        
-        return $this->render('user/index.html.twig', [
-            'searchForm' => $searchForm->createView(),
-            "users" => $users,
-        ]);
-
-    }
-
-    /**
-     * @Route("/user/profile/{id}", name="app_profil_update", requirements={"id"="\d+"})
-     */
-    public function profil(Profile $profile, Request $request, EntityManagerInterface $entityManager)
-    {
-        $user = $this->getUser();
-        $form = $this->createForm(ProfileType::class, $profile);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $entityManager->persist($profile);
-            $entityManager->persist($user);
-            $entityManager->flush();
-            $this->addFlash('success',"Votre profil a été modifié.");
-            return $this->redirectToRoute("app_user", [
-                "id" => $user->getId()
-            ]);
-        }
-
-        return $this->render('user/profil.html.twig', [
-            "profile" => $profile,
-            "form" => $form->createView()
-        ]);
     }
 }

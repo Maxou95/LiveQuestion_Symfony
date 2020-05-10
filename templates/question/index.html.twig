@@ -13,7 +13,7 @@
                     <p class="card-text">{{ question.category }}</p>
                 </div>
                 <div class="card-footer text-muted small">
-                    {{ question.created|date("m/d/Y h:i a") }} |
+                    {{ question.created|date("d/m/Y h:i") }} |
                     <a href="{{ path('app_question_like', {'id': question.id })}}" class="btn btn-link js-question-like">
                         <span class="js-question-likes">{{ question.questionLikes | length }}</span>
                         {% if question.isLikedByUser(app.user) %}
@@ -39,7 +39,7 @@
                         <p class="card-text">{{ answer.body }}</p>
                     </div>
                     <div class="card-footer text-muted small">
-                        <a href="{{ path('app_user', { 'id': answer.user.id }) }}">{{ answer.user.username }}</a> - {{ answer.created|date("m/d/Y h:i") }}
+                        <a href="{{ path('app_user', { 'id': answer.user.id }) }}">{{ answer.user.username }}</a> - {{ answer.created|date("d/m/Y h:i") }}
                     </div>
                 </div>
                 {% endfor %}

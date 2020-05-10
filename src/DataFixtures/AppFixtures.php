@@ -41,6 +41,7 @@ class AppFixtures extends Fixture
             ->setGender($faker->title)
             ->setJob($faker->jobTitle)
             ->setLanguage('Français')
+            ->setImageFile()
             ->setUser($user);
 
             $manager->persist($profile);

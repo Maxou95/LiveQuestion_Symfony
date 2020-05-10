@@ -1,3 +1,8 @@
+body
+{
+    background-color: #f8f9fa;
+}
+
 .livequestion
 {
     background-color: #ec008c;
@@ -30,4 +35,135 @@
 .mt-330
 {
     margin-top: 330px;
+}
+
+.dropdown-menu
+{
+    width: 50%;
+    padding: 5px;
+}
+.dropdown-menu a 
+{
+    color: #ec008c !important;
+}
+
+.nav-link-dropdown img
+{
+    border-radius: 50%;
+}
+
+.nav-link-dropdown
+{
+    text-decoration: none !important;
+    color: #fff;
+}
+
+.nav-link-dropdown:hover
+{
+    color: #FDB813;
+}
+
+.nav-link
+{
+    color : #eee !important;
+}
+
+.nav-link:hover 
+{
+    color: #FDB813 !important;
+}
+
+
+.navbar-brand
+{
+    display: inline-block;
+    height: 40px;
+    width: 195px;
+    background: url(../images/livequestion.png) center no-repeat;
+    background-size: contain;
+}
+
+.navbar-brand:hover
+{
+    background: url(../images/livequestionhover2.png) center no-repeat;
+    background-size: contain;
+}
+
+input
+{
+    border-radius: 50px !important;
+}
+
+.question {
+    width: 96%;
+    border-radius: 30px;
+    background-color: #fff;
+    color: #495057;
+    padding: 2%;
+    margin: 1% auto;
+    transition-duration: 1000ms;
+
+}
+
+.question:hover {
+    width: 100%;
+    transition-duration: 1000ms;
+    padding: 4%;
+    margin: 2% auto;
+}
+
+.question img
+{
+    border-radius: 50px;
+    display: inline-block;
+}
+
+.question-header
+{
+    width: 100%;
+    height: 55px;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.question-header a 
+{
+    color: #495057;
+}
+
+.question-header a:hover
+{
+    color: #ec008c;
+    text-decoration: none;
+}
+
+.question-body
+{
+    display: block;
+    width: 100%;
+    padding: 20px 40px;
+    text-align: justify;
+}
+.question-footer
+{
+    width: 100%;
+    text-align: center;
+    height: 20px;
+    border-top: 1px solid #f8f9fa;
+}
+
+.question-info
+{
+    display: inline-block;
+}
+
+h3 a
+{
+    color: #495057;
+    text-decoration: none;
+}
+
+h3 a:hover
+{
+    color: #ec008c;
+    text-decoration: none;
 }
