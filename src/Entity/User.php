@@ -68,11 +68,17 @@ class User implements UserInterface
      */
     private $profile;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Conversation::class, inversedBy="users")
+     */
+    private $conversations;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
         $this->answers = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -265,4 +271,5 @@ class User implements UserInterface
 
         return $this;
     }
+
 }

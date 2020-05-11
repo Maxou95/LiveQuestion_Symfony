@@ -1,4 +1,7 @@
 {
+    "cboden/ratchet": {
+        "version": "v0.4.2"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -90,23 +93,26 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
-    "easycorp/easy-log-handler": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "70062abc2cd58794d2a90274502f81b55cd9951b"
-        },
-        "files": [
-            "./config/packages/dev/easy_log_handler.yaml"
-        ]
+    "evenement/evenement": {
+        "version": "v3.0.1"
     },
     "friendsofsymfony/message-bundle": {
         "version": "v2.0.1"
     },
     "fzaninotto/faker": {
         "version": "v1.9.1"
+    },
+    "gos/pubsub-router-bundle": {
+        "version": "v2.2.0"
+    },
+    "gos/web-socket-bundle": {
+        "version": "v2.5.0"
+    },
+    "gos/websocket-client": {
+        "version": "v1.0.0"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.6.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -135,8 +141,38 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.1.0"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
+    },
+    "ratchet/rfc6455": {
+        "version": "v0.2.6"
+    },
+    "react/cache": {
+        "version": "v1.0.0"
+    },
+    "react/dns": {
+        "version": "v1.2.0"
+    },
+    "react/event-loop": {
+        "version": "v1.1.1"
+    },
+    "react/promise": {
+        "version": "v2.7.1"
+    },
+    "react/promise-timer": {
+        "version": "v1.5.1"
+    },
+    "react/socket": {
+        "version": "v1.4.0"
+    },
+    "react/stream": {
+        "version": "v1.1.1"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -354,6 +390,9 @@
     },
     "symfony/security-core": {
         "version": "v4.2.3"
+    },
+    "symfony/serializer": {
+        "version": "v4.4.8"
     },
     "symfony/stopwatch": {
         "version": "v4.2.3"
