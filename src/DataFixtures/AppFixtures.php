@@ -223,7 +223,7 @@ class AppFixtures extends Fixture
             $message = new Message();
             $message->setSender($participants[mt_rand(0, count($participants)-1)])
             ->setCreated($faker->dateTimeThisMonth)
-            ->setBody($faker->sentence(mt_rand(0,20)))
+            ->setBody($faker->sentence(mt_rand(5,20)))
             ->setConversation($conversation);
             
             $manager->persist($message);

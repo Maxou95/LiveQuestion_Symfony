@@ -14,8 +14,7 @@ class ConversationSearchType extends AbstractType
     {
         $builder
             ->add('name', SearchType::class, [
-                'label' => ' ',
-                'attr' => ['placeholder' => 'Rechercher une question']
+                'label' => 'Rechercher une conversation :',
             ])
         ;
     }

@@ -10,6 +10,52 @@
         </div>
     {% endfor %}
     <div class="row justify-content-center">
+        {% if app.user.conversations is not empty %}
+        <div class="col-3 conv-timeline">
+            {{form_start(searchFormConv)}}
+                {{form_widget(searchFormConv)}}
+            {{form_end(searchFormConv)}}
+            {% if formConvSubmitted == false %}
+                {% for conversation in app.user.conversations %}
+                    <a href="{{path('app_chat', {'id': conversation.id})}}">    
+                        <div class="conv-mini">
+                            {% for message in conversation.messages %}
+                                {% if loop.last %}
+                                    {% if message.sender.profile.image.name is not null %}
+                                    <img class="last-message-user-photo" src="{{ asset('images/profiles/' ~ message.sender.profile.image.name) }}"height="50" width="50" alt="">
+                                    {% elseif message.sender.profile.fixturesImageName is not null %}
+                                    <img src="{{asset('images/fixtures/users/' ~ message.sender.profile.fixturesImageName  )}}" class="last-message-user-photo" height="50" width="50" alt="">
+                                    {% else %}
+                                    <img class="last-message-user-photo" src="{{ asset('images/profil-picture-illustration.png') }}" height="100%" width="30" alt="">
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="last-message"><h6><strong>{{conversation.name|u.truncate(40, '.')}}</strong></h6><br>{{conversation.messages|last.body|u.truncate(50, '...')}}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% else %}
+                {% for conversation in conversations %}
+                <a href="{{path('app_chat', {'id': conversation.id})}}">    
+                    <div class="conv-mini">
+                        {% for message in conversation.messages %}
+                            {% if loop.last %}
+                                {% if message.sender.profile.image.name is not null %}
+                                <img class="last-message-user-photo" src="{{ asset('images/profiles/' ~ message.sender.profile.image.name) }}"height="50" width="50" alt="">
+                                {% elseif message.sender.profile.fixturesImageName is not null %}
+                                <img src="{{asset('images/fixtures/users/' ~ message.sender.profile.fixturesImageName  )}}" class="last-message-user-photo" height="50" width="50" alt="">
+                                {% else %}
+                                <img class="last-message-user-photo" src="{{ asset('images/profil-picture-illustration.png') }}" height="100%" width="30" alt="">
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        <div class="last-message"><h6><strong>{{conversation.name|u.truncate(40, '.')}}</strong></h6><br>{{conversation.messages|last.body|u.truncate(50, '...')}}</div>
+                    </div>
+                </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% endif %}
         <div class="col-12 col-sm-11 col-md-10 col-lg-9">
             {{form_start(searchForm)}}
                 {{form_widget(searchForm)}}

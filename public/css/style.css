@@ -578,13 +578,50 @@ a:hover
     border :1px solid #fff;
     box-shadow:  7px 7px 14px #dfe0e1, 
     -7px -7px 14px #ffffff;
-    
+    background-color: #fff;   
 }
 
 .conv:hover {
     box-shadow:  14px 14px 7px #dfe0e1, 
     -14px -14px 7px #ffffff;
    transition-duration: 1000ms;
+}
+
+.conv-mini
+{
+    width: 100%;
+    color: #495057;
+    padding: 5px 5px 20px 5px;
+    margin: 10px auto;
+    transition-duration: 1000ms;
+    border-bottom: 1px solid #fff;
+}
+
+.conv-mini .last-message
+{
+    text-align: justify;
+}
+
+.conv-timeline
+{
+    position: sticky;
+    top: 50px;
+    border-radius: 30px;
+    height: 90vh;
+    overflow-y: scroll;
+}
+
+.conv-timeline::-webkit-scrollbar
+{
+    display: none;
+}
+
+@media (max-width:991px)
+{
+    .conv-timeline
+    {
+        display: none;
+    }
 }
 
 .participants
