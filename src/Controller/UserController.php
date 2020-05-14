@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 class UserController extends AbstractController
 {
@@ -28,8 +30,10 @@ class UserController extends AbstractController
         $users = $userRepository->findAll();
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
- 
+            
+
             $search = $searchForm->getData()->getUsername();
+
 
             $datas = $userRepository->search($search);
 
@@ -56,7 +60,7 @@ class UserController extends AbstractController
     public function view(User $user, QuestionRepository $questionRepository)
     {
         $questions = $questionRepository->findByUserId($user->getId());
-        
+
         return $this->render('user/view.html.twig', [
             "user" => $user,
             "questions" => $questions,
@@ -88,11 +92,17 @@ class UserController extends AbstractController
     /**
      * @Route("/user/update-logs/{id}", name="app_user_updatelogs", requirements={"id"="\d+"})
      */
-    public function updateLogs(User $user, Request $request, EntityManagerInterface $entityManager){
+    public function updateLogs(User $user, Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder){
         $form = $this->createForm(UserUpdateType::class, $user);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('success',"Vos informations de connexions ont été modifiées.");

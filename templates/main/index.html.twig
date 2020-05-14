@@ -4,32 +4,45 @@
 
 {% block body %}
 {% if app.user %}
-    <div class="row">
-        <div class="">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-11 col-md-10 col-lg-9">
             {{form_start(searchForm)}}
                 {{form_widget(searchForm)}}
             {{form_end(searchForm)}}
+            {% if formSubmitted == true %}
+                <a href="{{path('main')}}" class="btn return">Afficher toutes les questions</a>
+            {% endif %}
             {% for question in questions %}
                 <div class="question">
-                    
                     <div class="question-header">
                         <a href="{{ path('app_user', { 'id': question.user.id }) }}">
                         {% if question.user.profile.image.name is not null %}
                             <img src="{{ asset(vich_uploader_asset(question.user.profile, 'imageFile')) }}" height="40" width="40" alt="">
+                        {% elseif question.user.profile.fixturesImageName is not null %}
+                            <img src="{{asset('images/fixtures/users/' ~ question.user.profile.fixturesImageName  )}}" height="40" width="40" alt="">
                         {% else %}
                             <img src="{{ asset('images/profil-picture-illustration.png') }}" height="40" width="40" alt="">
                         {% endif %}
                         </a>
-                        <p class="question-info"><a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username}}</a> | {{ question.created|date("d/m/Y h:i") }}</p>
+                        <p class="question-info"><a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username}}</a> | {{ question.created|date("d/m/Y H:i", "Europe/Paris") }}</p>
+                        <p class="question-category"><i class="fas fa-tag"></i> {{question.category}}</p>
                     </div>
                     <div class="question-body">
                         <h3><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h3>
+                        <a href="{{ path('app_question', { 'id': question.id }) }}">
+                        {% if question.image.name is not null %}
+                            <img src="{{ asset(vich_uploader_asset(question, 'imageFile')) }}" class="question-photo" alt="">
+                        {% elseif question.fixturesImageName is not null %}
+                            <img src="{{asset('images/fixtures/questions/' ~ question.fixturesImageName  )}}" class="question-photo" alt="">
+                        {% endif %}
+                        </a>
                     </div>
                     <div class="question-footer">
-                        <p>
-                            {{ question.views }} | {{ question.answers|length }} | 
-                            <a href="{{ path('app_question_like', {'id': question.id })}}" class="btn btn-link js-question-like">
-                                <span class="js-question-likes">{{ question.questionLikes | length }}</span>
+                        <p class="question-category-small"><i class="fas fa-tag"></i> {{question.category}}</p>
+                        <p class="question-vrl">
+                            {{ question.views }}   <i class="fas fa-eye"></i>     |     {{ question.answers|length }}   <i class="fas fa-comments"></i>    |
+                            <a href="{{ path('app_question_like', {'id': question.id })}}" class="js-question-like">
+                                <span class="js-question-likes">{{ question.questionLikes | length }}</span>   
                                 {% if question.isLikedByUser(app.user) %}
                                     <i class="fas fa-thumbs-up"></i>
                                 {% else %}
@@ -38,38 +51,7 @@
                             </a>
                         </p>
                     </div>
-                </div>
-                <!-- <div class="card mb-3">
-                    <div class="card-body bg-light">
-                        <div class="row">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col-6 text-center">
-                                        {{ question.answers|length }}
-                                        <br>
-                                        <small>Réponses</small>
-                                    </div>
-                                    <div class="col-6 text-center">
-                                        {{ question.views }}
-                                        <br>
-                                        <small>Vues</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-9">
-                                <h5 class="card-title"><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h5>
-                                <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("d/m/Y h:i") }} | <a href="{{ path('app_question_like', {'id': question.id })}}" class="btn btn-link js-question-like">
-                                    <span class="js-question-likes">{{ question.questionLikes | length }}</span>
-                                    {% if question.isLikedByUser(app.user) %}
-                                        <i class="fas fa-thumbs-up"></i>
-                                    {% else %}
-                                        <i class="far fa-thumbs-up"></i>
-                                    {% endif %}
-                                </a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+                </div>    
             {% else %}
                 <div class="text-center alert alert-livequestion">Pas de questions !</div>
             {% endfor %}
@@ -81,11 +63,7 @@
     {{message}}
 </div>
 {% endfor %}
-<div class="card mb-3">
-    <div class="card-body bg-light">
-        <p>Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
-    </div>
-</div>       
+<p class="alert-livequestion">Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
 {% endif %}
 {% endblock %}
 

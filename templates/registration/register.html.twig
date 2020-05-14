@@ -3,24 +3,19 @@
 {% block title %}S'inscrire{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-6 offset-3">
-
-            <div class="card bg-light">
-                <div class="card-body">
-                    <h1 class="h3 mb-3 font-weight-normal text-center">S'inscrire</h1>
-
-                    {{ form_start(form, {'attr': {'id': 'form'}}) }}
-                        {{ form_row(form.username) }}
-                        {{ form_row(form.email) }}
-                        {{ form_row(form.plainPassword) }}
-                        {{ form_row(form.profile)}}
-                        <button class="btn livequestion btn-block cb">S'inscrire</button>
-                    {{ form_end(form) }}
-                </div>
-            </div>
+    <div class="row justify-content-center">
+        <div class="col-10 col-md-8">
+            <h1 class="h3 mb-3 font-weight-normal text-center">S'inscrire</h1>
+            {{ form_start(form, {'attr': {'id': 'form'}}) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.plainPassword) }}
+                {{ form_row(form.profile)}}
+                <button class="btn btn-livequestion btn-block cb">S'inscrire</button>
+            {{ form_end(form) }}
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
     <script>
         $('.custom-file-input').on('change', function(event) {
@@ -46,3 +41,6 @@
         });
     </script>
 {% endblock %}
+
+
+    

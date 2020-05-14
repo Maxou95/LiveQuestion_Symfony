@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversations{% endblock %}
+
+{% block refresh %}
+<meta http-equiv="refresh" content="60">
+{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        {% if app.user in conversation.participants %}
+            <h1>{{conversation.name}}</h1>
+            <div class="participants-block">
+                {% for participant in conversation.participants %}
+                    {% if loop.last %}
+                        <a class="participants-center" href="{{path('app_user', {'id': participant.id })}}">{{participant.username}}</a>
+                    {% else %}
+                        <a class="participants-center" href="{{path('app_user', {'id': participant.id })}}">{{participant.username}},</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% for message in conversation.messages|sort((a, b) => a.created <=> b.created) %}
+                {% if message.sender.id == app.user.id %}
+                    <p class="message-info message-info-right">{{message.sender.username}} | {{message.created|date("d/m/Y H:i ", "Europe/Paris")}}</p>
+                    {% if message.sender.profile.image.name is not null %}
+                        <img src="{{ asset(vich_uploader_asset(message.sender.profile, 'imageFile')) }}" class="chat-photo chat-photo-right" alt="">
+                    {% elseif message.sender.profile.fixturesImageName is not null %}
+                        <img src="{{asset('images/fixtures/users/' ~ message.sender.profile.fixturesImageName  )}}" class="chat-photo chat-photo-right" alt="">
+                    {% else %}
+                        <img src="{{ asset('images/profil-picture-illustration.png') }}" class="chat-photo chat-photo-right" alt="">
+                    {% endif %}
+                    <div class="message sended">
+                        <p>{{ message.body }}</p>
+                    </div>
+                {% else %}
+                    <p class="message-info message-info-left">{{message.sender.username}} | {{message.created|date("d/m/Y H:i", "Europe/Paris")}}</p>
+                    {% if message.sender.profile.image.name is not null %}
+                        <img src="{{ asset(vich_uploader_asset(message.sender.profile, 'imageFile')) }}" class="chat-photo chat-photo-left" alt="">
+                    {% elseif message.sender.profile.fixturesImageName is not null %}
+                        <img src="{{asset('images/fixtures/users/' ~ message.sender.profile.fixturesImageName  )}}" class="chat-photo chat-photo-left" alt="">
+                    {% else %}
+                        <img src="{{ asset('images/profil-picture-illustration.png') }}" class="chat-photo chat-photo-left" alt="">
+                    {% endif %}                    
+                    <div class="message received">
+                        <p>{{ message.body }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {{form_start(messageForm)}}
+                {{form_widget(messageForm)}}
+            {{form_end(messageForm)}}
+            <p id="anchor"></p>
+        {% else %}
+        <p class="alert-livequestion">Vous n'etes pas autorisé à voir cette conversation.</p>
+        {% endif %}
+    {% else %}
+
+    <p class="alert-livequestion">Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
+    
+    {% endif %}
+{% endblock %}

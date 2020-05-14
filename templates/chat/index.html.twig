@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversations{% endblock %}
+
+{% block refresh %}
+<meta http-equiv="refresh" content="30">
+{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <a class="btn btn-livequestion col-12 col-sm-11 col-md-10 col-lg-9" href="{{path('app_new_chat')}}">Nouvelle conversation</a>
+            {% for conversation in app.user.conversations %}
+            <div class="col-12 col-sm-11 col-md-10 col-lg-9">
+                <div class="conv">
+                    <a href="{{path('app_chat', {'id': conversation.id })}}#anchor">
+                        <h3 class="h3conv">{{conversation.name}}</h3>
+                        <p class="participants">   (</p>
+                        {% for participant in conversation.participants %}
+                            {% if loop.last %}
+                            <a class="participants" href="{{path('app_user', {'id': participant.id })}}">{{participant.username}}</a>
+                            {% else %}
+                            <a class="participants" href="{{path('app_user', {'id': participant.id })}}">{{participant.username}},</a>
+                            {% endif %}
+                        {% endfor %}
+                        <p class="participants">)</p><br>
+                        {% for message in conversation.messages %}
+                            {% if loop.last %}
+                                {% if message.sender.profile.image.name is not null %}
+                                <img class="last-message-user-photo" src="{{ asset('images/profiles/' ~ message.sender.profile.image.name) }}"height="30" width="30" alt="">
+                                {% elseif message.sender.profile.fixturesImageName is not null %}
+                                <img src="{{asset('images/fixtures/users/' ~ message.sender.profile.fixturesImageName  )}}" class="last-message-user-photo" height="30" width="30" alt="">
+                                {% else %}
+                                <img class="last-message-user-photo" src="{{ asset('images/profil-picture-illustration.png') }}" height="30" width="30" alt="">
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        <p class="last-message">{{conversation.messages|last.sender.username}} : {{conversation.messages|last.body}}</p>
+                    </a>
+                </div>
+            </div> 
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
+    </div>    
+    {% endif %}
+{% endblock %}

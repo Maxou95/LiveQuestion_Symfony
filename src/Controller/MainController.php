@@ -33,12 +33,14 @@ class MainController extends AbstractController
             return $this->render('main/index.html.twig', [
                 'searchForm' => $searchForm->createView(),
                 'questions' => $datas,
+                'formSubmitted' => true,
             ]);
         }
         
         return $this->render('main/index.html.twig', [
             'searchForm' => $searchForm->createView(),
             'questions' => $questions,
+            'formSubmitted' => false,
         ]);
     }
 }
