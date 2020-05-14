@@ -20,15 +20,12 @@ class ConversationRepository extends ServiceEntityRepository
     }
 
     
-    public function findByUserId($value)
-    {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.user = :val')
-            ->setParameter('val', $value)
-            ->orderBy('q.created', 'DESC')
+    public function search($name) {
+        return $this->createQueryBuilder('conversation')
+            ->andWhere('conversation.name LIKE :name')
+            ->setParameter('name', '%'.$name.'%')
             ->getQuery()
-            ->getResult()
-        ;
+            ->execute();
     }
 
     /*

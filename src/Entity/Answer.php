@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnswerRepository")
@@ -38,9 +40,15 @@ class Answer
      */
     private $created;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AnswerLike", mappedBy="answer", orphanRemoval=true)
+     */
+    private $answerLikes;
+
     public function __construct()
     {
         $this->created = new \DateTime();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,5 +102,45 @@ class Answer
         $this->created = $created;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|AnswerLike[]
+     */
+    public function getAnswerLikes(): Collection
+    {
+        return $this->answerLikes;
+    }
+
+    public function addAnswerLike(AnswerLike $answerLikes): self
+    {
+        if (!$this->answerLikes->contains($answerLikes)) {
+            $this->answerLikes[] = $answerLikes;
+            $answerLikes->setAnswer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswerLike(AnswerLike $answerLikes): self
+    {
+        if ($this->answerLikes->contains($answerLikes)) {
+            $this->answerLikes->removeElement($answerLikes);
+            // set the owning side to null (unless already changed)
+            if ($answerLikes->getAnswer() === $this) {
+                $answerLikes->setAnswer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isLikedByUser(User $user) : bool
+    {
+        foreach($this->answerLikes as $like) {
+            if($like->getUser() === $user) return true;
+        }
+
+        return false;
     }
 }

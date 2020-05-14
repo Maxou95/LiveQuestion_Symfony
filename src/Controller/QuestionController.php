@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Answer;
+use App\Entity\AnswerLike;
 use App\Entity\Question;
 use App\Entity\QuestionLike;
 use App\Form\AnswerType;
 use App\Form\QuestionType;
 use App\Repository\QuestionLikeRepository;
+use App\Repository\AnswerLikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -82,6 +84,44 @@ class QuestionController extends AbstractController
     }
 
      /**
+     * @Route("/answer/{id}/like", name="app_answer_like", requirements={"id"="\d+"})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function answerLike(Answer $answer, EntityManagerInterface $entityManager, AnswerLikeRepository $likes) : Response
+    {
+        $user=$this->getUser();
+
+        if($answer->isLikedByUser($user)){
+            $like = $likes->findOneBy([
+                'question' => $answer,
+                'user' => $user
+            ]);
+            $entityManager->remove($like);
+            $entityManager->flush();
+            
+            return $this->json([
+                'code' => 200,
+                'message' => "Le like a bien été supprimé",
+                'likes' => $likes->count(['answer' => $answer])
+            ], 200);
+
+        }
+
+        $like = new AnswerLike();
+        $like->setAnswer($answer)
+            ->setUser($user);
+
+        $entityManager->persist($like);
+        $entityManager->flush();
+
+        return $this->json([
+            'code' => 200,
+            'message' => "Le like a bien été ajouté",
+            'likes' => $likes->count(['answer' => $answer])
+        ], 200);
+    }
+
+    /**
      * @Route("/question/{id}/like", name="app_question_like", requirements={"id"="\d+"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */

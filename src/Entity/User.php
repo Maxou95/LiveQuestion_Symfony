@@ -65,6 +65,11 @@ class User implements UserInterface, ParticipantInterface
     private $questionLikes;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AnswerLike", mappedBy="user")
+     */
+    private $answerLikes;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Profile", mappedBy="user", cascade={"persist", "remove"})
      */
     private $profile;
@@ -78,7 +83,8 @@ class User implements UserInterface, ParticipantInterface
     {
         $this->questions = new ArrayCollection();
         $this->answers = new ArrayCollection();
-        $this->likes = new ArrayCollection();
+        $this->questionLikes = new ArrayCollection();
+        $this->answerLikes = new ArrayCollection();
         $this->conversations = new ArrayCollection();
     }
 
@@ -250,6 +256,29 @@ class User implements UserInterface, ParticipantInterface
             // set the owning side to null (unless already changed)
             if ($questionLikes->getUser() === $this) {
                 $questionLikes->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function addAnswersLike(AnswerLike $answerLikes): self
+    {
+        if (!$this->answerLikes->contains($answerLikes)) {
+            $this->answerLikes[] = $answerLikes;
+            $answerLikes->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswersLike(AnswerLike $answerLikes): self
+    {
+        if ($this->answerLikes->contains($answerLikes)) {
+            $this->answerLikes->removeElement($answerLikes);
+            // set the owning side to null (unless already changed)
+            if ($answerLikes->getUser() === $this) {
+                $answerLikes->setUser(null);
             }
         }
 

@@ -10,7 +10,7 @@ html
 
 body
 {
-    background-color: #f8f9fa;
+    background-color: #edf2f4;
     font-family: 'Varela Round', sans-serif;
 }
 
@@ -30,6 +30,12 @@ img
     background-color: #ec008c;
     color: #fff;
     border-radius: 50px;
+}
+
+.btn-livequestion:hover
+{
+    background-color: #FDB813;
+    color: #fff;
 }
 
 h1
@@ -59,6 +65,11 @@ input,select, textarea
     padding: 50px 100px;
     width: 100%;
     text-align: justify;
+}
+
+.fas.fa-heart
+{
+    color: #ec008c;
 }
 
 
@@ -149,11 +160,6 @@ input,select, textarea
     background-size: contain;
 }
 
-input
-{
-    border-radius: 50px !important;
-}
-
 .question,.answer {
     width: 100%;
     border-radius: 30px;
@@ -165,7 +171,6 @@ input
     box-shadow:  7px 7px 14px #dfe0e1, 
     -7px -7px 14px #ffffff;
     background-color: #fff;
-
 }
 
 .question:hover {
@@ -184,7 +189,7 @@ input
 {
     width: 100%;
     height: 45px;
-    border-bottom: 1px solid #f8f9fa;
+    border-bottom: 1px solid #edf2f4;
 }
 
 .question-header a, .answer-header a 
@@ -215,7 +220,7 @@ input
     width: 100%;
     text-align: right;
     height: 15px;
-    border-top: 1px solid #f8f9fa;
+    border-top: 1px solid #edf2f4;
 }
 
 .question-footer-admin
@@ -223,7 +228,7 @@ input
     width: 100%;
     text-align: right;
     height: 45px;
-    border-top: 1px solid #f8f9fa;
+    border-top: 1px solid #edf2f4;
 }
 
 .question-info,.answer-info
@@ -416,6 +421,26 @@ h3 a:hover
     float: right;
 }
 
+#new_conversation_participants
+{
+    height: 400px;
+    border-radius: 5px !important;
+    background: none;
+    border: none;
+}
+
+option
+{
+    padding: 5px;
+    border :1px solid #fff;
+    box-shadow:  1px 1px 2px #dfe0e1, 
+    -1px -1px 2px #ffffff;
+    background-color: #fff;
+    text-align: center;
+    margin-bottom: 5px;
+    border-radius: 50px;
+}
+
 #message_body
 {
     border-radius: 20px;
@@ -491,6 +516,34 @@ a:hover
 
 }
 
+.user h3
+{
+    padding-top: 8px;
+}
+
+.user p
+{
+    padding-top: 10px;
+}
+
+.orange-icon
+{
+    color: #FDB813;
+}
+
+.pink-icon
+{
+    color: #ec008c;
+}
+
+@media (max-width:991px)
+{
+    .user p span
+    {
+        display: none;
+    }
+}
+
 .user:hover
 {
     box-shadow:  6px 6px 6px #dfe0e1, 
@@ -525,13 +578,50 @@ a:hover
     border :1px solid #fff;
     box-shadow:  7px 7px 14px #dfe0e1, 
     -7px -7px 14px #ffffff;
-    
+    background-color: #fff;   
 }
 
 .conv:hover {
     box-shadow:  14px 14px 7px #dfe0e1, 
     -14px -14px 7px #ffffff;
    transition-duration: 1000ms;
+}
+
+.conv-mini
+{
+    width: 100%;
+    color: #495057;
+    padding: 5px 5px 20px 5px;
+    margin: 10px auto;
+    transition-duration: 1000ms;
+    border-bottom: 1px solid #fff;
+}
+
+.conv-mini .last-message
+{
+    text-align: justify;
+}
+
+.conv-timeline
+{
+    position: sticky;
+    top: 50px;
+    border-radius: 30px;
+    height: 90vh;
+    overflow-y: scroll;
+}
+
+.conv-timeline::-webkit-scrollbar
+{
+    display: none;
+}
+
+@media (max-width:991px)
+{
+    .conv-timeline
+    {
+        display: none;
+    }
 }
 
 .participants
@@ -576,6 +666,11 @@ a:hover
 } 
 
 /* USER PROFILE */
+#username
+{
+    font-size: 4em;
+    text-transform: uppercase;
+}
 .user-card
 {
     width: 100%;
@@ -634,7 +729,7 @@ h5
 ::-webkit-scrollbar {
     width: 0.5%;
     height: 0.5%;
-    background: #f8f9fa;
+    background: #edf2f4;
 }
   
 ::-webkit-scrollbar-thumb {
@@ -647,4 +742,15 @@ border-radius: 5px;
 .full-width
 {
     width: 100%;
+}
+
+.btn-white
+{
+    background-color: #edf2f4;
+    border-radius: 50px;
+}
+
+.btn-white:hover
+{
+    color: #ec008c;
 }
