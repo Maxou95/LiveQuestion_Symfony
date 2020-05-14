@@ -19,6 +19,16 @@ class AnswerRepository extends ServiceEntityRepository
         parent::__construct($registry, Answer::class);
     }
 
+    public function findByUserId($value)
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.user = :val')
+            ->setParameter('val', $value)
+            ->orderBy('q.created', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    } 
     // /**
     //  * @return Answer[] Returns an array of Answer objects
     //  */

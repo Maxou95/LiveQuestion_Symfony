@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Answer;
+use App\Entity\AnswerLike;
 use App\Entity\Conversation;
 use App\Entity\Message;
 use App\Entity\Profile;
@@ -111,6 +112,21 @@ class AppFixtures extends Fixture
             'Autre',
         ];
 
+        $user=new User();
+        $user->setEmail('administrateur@livequestion.fr')
+        ->setUsername('LiveQuestion')
+        ->setRoles(['ROLE_ADMIN']);
+        $password = $this->passwordEncoder->encodePassword($user, "QuestionLive");
+        $user->setPassword($password);
+        $profile = new Profile();
+        $profile->setFirstName('Live')
+        ->setLastName('Question');
+        $user->setProfile($profile);
+
+        $manager->persist($user);
+        $manager->persist($profile);
+
+
         for($i=0; $i<20; $i++){
             $user= new User();
             $user->setEmail($faker->email)
@@ -145,7 +161,7 @@ class AppFixtures extends Fixture
             for($j=0; $j<mt_rand(0,20); $j++)
             {
                 $question = new Question();
-                $question->setQuestion($faker->sentence(mt_rand(5,15)).'?')
+                $question->setQuestion(rtrim($faker->sentence(mt_rand(5,15)),'.').' ?')
                 ->setViews(mt_rand(10,300))
                 ->setCategory($categories[mt_rand(0,28)])
                 ->setCreated($faker->dateTimeThisMonth)
@@ -172,6 +188,12 @@ class AppFixtures extends Fixture
             ->setBody($faker->sentence(mt_rand(5,15)));
 
             $manager->persist($answer);
+
+            $answerLike = new AnswerLike();
+            $answerLike->setAnswer($answer)
+            ->setUser($this->users[mt_rand(0, count($this->users)-1)]);
+
+            $manager->persist($answerLike);
 
             $questionLike = new QuestionLike();
             $questionLike->setQuestion($this->questions[mt_rand(0, count($this->questions)-1)])

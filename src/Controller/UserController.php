@@ -39,7 +39,7 @@ class UserController extends AbstractController
 
 
             if ($datas == null) {
-                $this->addFlash('erreur', 'Aucun utilisateur ne correspond à vos critères de recherche');
+                $this->addFlash('error', 'Aucun utilisateur ne correspond à vos critères de recherche.');
             }
 
             return $this->render('user/index.html.twig', [

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Conversation;
 use App\Entity\Message;
 use App\Entity\User;
+use App\Form\ConversationSearchType;
 use App\Form\MessageType;
 use App\Form\NewConversationType;
 use App\Repository\ConversationRepository;
@@ -17,12 +18,30 @@ class ChatController extends AbstractController
     /**
      * @Route("/chat", name="app_chat_main")
      */
-    public function index(ConversationRepository $conversationRepository)
+    public function index(ConversationRepository $conversationRepository, Request $request)
     {
+        $searchForm = $this->createForm(ConversationSearchType::class);
+        $searchForm->handleRequest($request);
         $conversations = $conversationRepository->findBy([], ['created' => 'DESC']);
 
+        if($searchForm->isSubmitted() && $searchForm->isValid()){
+            $search = $searchForm->getData()->getName();
+            $datas = $conversationRepository->search($search);
+
+            if ($datas == null) {
+                $this->addFlash('error', 'Aucune conversation ne correspond à vos critères de recherche.');
+            }
+            
+            return $this->render('chat/index.html.twig', [
+                'conversations' => $datas,
+                'searchForm' => $searchForm->createView(),
+                'searchFormSubmitted' => true
+            ]);
+        }
         return $this->render('chat/index.html.twig', [
             'conversations' => $conversations,
+            'searchForm' => $searchForm->createView(),
+            'searchFormSubmitted' => false
         ]);
     }
 

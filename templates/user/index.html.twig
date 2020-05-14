@@ -20,16 +20,22 @@
                     {% endif %}
                 </div>
                 <div class="col-5">
-                    <h3>{{ user.username }}</h3>
+                    <h3 style="margin-left: 15px;">{{ user.username }}</h3>
                 </div>
                 <div class="col-3">
-                    <p>{{ user.questions|length}} questions posées</p>
+                    <p><i class="fas fa-arrow-circle-up orange-icon"></i> {{ user.questions|length}} <span>questions posées</span></p>
                 </div>
                 <div class="col-3">
-                    <p>{{ user.answers|length}} réponses partagées</p>
+                    <p><i class="fas fa-arrow-circle-down pink-icon"></i> {{ user.answers|length}} <span>avis exprimés</span></p>
                 </div>
             </div>
         </div>
     </a>
+    {% else %}
+        {% for message in app.flashes('error')%}
+        <div class="alert alert-livequestion">
+            {{message}}
+        </div>
+        {% endfor %}
     {% endfor %}
 {% endblock %}

@@ -25,7 +25,8 @@ class NewConversationType extends AbstractType
                 'multiple' => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => "Créer la conversation"
+                'label' => "Créer la conversation",
+                'attr' => ['class' => 'btn-livequestion full-width']
             ])
         ;
     }

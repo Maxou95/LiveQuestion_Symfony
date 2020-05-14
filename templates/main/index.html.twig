@@ -4,6 +4,11 @@
 
 {% block body %}
 {% if app.user %}
+    {% for message in app.flashes('success')%}
+        <div class="alert alert-livequestion">
+            {{message}}
+        </div>
+    {% endfor %}
     <div class="row justify-content-center">
         <div class="col-12 col-sm-11 col-md-10 col-lg-9">
             {{form_start(searchForm)}}
@@ -44,9 +49,9 @@
                             <a href="{{ path('app_question_like', {'id': question.id })}}" class="js-question-like">
                                 <span class="js-question-likes">{{ question.questionLikes | length }}</span>   
                                 {% if question.isLikedByUser(app.user) %}
-                                    <i class="fas fa-thumbs-up"></i>
+                                    <i class="fas fa-heart"></i>
                                 {% else %}
-                                    <i class="far fa-thumbs-up"></i>
+                                    <i class="far fa-heart"></i>
                                 {% endif %}
                             </a>
                         </p>

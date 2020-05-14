@@ -61,6 +61,18 @@
                     <div class="answer-body">
                         <p>{{ answer.body }}</p>
                     </div>
+                    <div class="question-footer">
+                        <p class="question-vrl">
+                            <a href="{{ path('app_answer_like', {'id': answer.id })}}" class="js-answer-like">
+                                <span class="js-answer-likes">{{ answer.answerLikes | length }}</span>   
+                                {% if answer.isLikedByUser(app.user) %}
+                                    <i class="fas fa-thumbs-up"></i>
+                                {% else %}
+                                    <i class="far fa-thumbs-up"></i>
+                                {% endif %}
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -99,6 +111,30 @@
         }
 
         document.querySelectorAll('a.js-question-like').forEach(function(link){
+            link.addEventListener('click', onClickBtnLike)
+        })
+
+    </script>
+    <script>
+        
+        function onClickBtnLike(event){
+            event.preventDefault();
+
+            const url = this.href;
+            const likeCount = this.querySelector('span.js-answer-likes')
+            const icone = this.querySelector('i');
+
+            axios.get(url).then(function(response){
+                likeCount.textContent = response.data.likes;
+                if(icone.classList.contains('fas')) {
+                    icone.classList.replace('fas','far');
+                } else {
+                    icone.classList.replace('far','fas');
+                }  
+            });
+        }
+
+        document.querySelectorAll('a.js-answer-like').forEach(function(link){
             link.addEventListener('click', onClickBtnLike)
         })
 

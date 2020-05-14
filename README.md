@@ -6,7 +6,7 @@
 
 <h2>Contexte :</h2>
 
-<p>Projet personnel encadré (PPE) réalisé en équipe de 4</p>
+<p>Projet personnel encadré (PPE) réalisé en équipe de 4.</p>
 
 <h2>Documentation :</h2>
 
@@ -49,6 +49,11 @@
 <code>php bin/console doctrine:fixtures:load</code>
 <h3>Lancer le serveur Symfony pour lancer le projet:</h3>
 <code>symfony serve</code>
+
+<h2>Comptes pour tester le projet<h2>
+<p>Tout les comptes générés par les DataFixtures ont pour mot de passe "password"</p>
+<p>Compte Administrateur : LiveQuestion</p>
+<p>Mot de passe Administrateur : QuestionLive<p>
 
 
 

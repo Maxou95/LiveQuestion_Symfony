@@ -25,11 +25,6 @@ class MainController extends AbstractController
 
             $datas = $questionRepository->search($search);
 
-
-            if ($datas == null) {
-                $this->addFlash('erreur', 'Aucune question ne correspond à vos critères de recherche');
-            }
-
             return $this->render('main/index.html.twig', [
                 'searchForm' => $searchForm->createView(),
                 'questions' => $datas,
