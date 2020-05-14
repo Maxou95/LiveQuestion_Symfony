@@ -10,7 +10,7 @@
 
 <h2>Documentation :</h2>
 
-<a href="{{asset('cahierdescharges.pdf')}}">Cahier des charges</a>
+<a href="{{asset('cahierdescharges.pdf')}}" target="_blank">Cahier des charges</a>
 
 <h2>Technologies et frameworks utilisées :</h2>
 
