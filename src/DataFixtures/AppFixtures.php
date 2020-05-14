@@ -3,15 +3,27 @@
 namespace App\DataFixtures;
 
 use App\Entity\Answer;
+use App\Entity\Conversation;
+use App\Entity\Message;
 use App\Entity\Profile;
 use App\Entity\Question;
 use App\Entity\QuestionLike;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 class AppFixtures extends Fixture
 {
+    private $passwordEncoder;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+    }
+
+
     public function load(ObjectManager $manager)
     {
         
@@ -21,13 +33,95 @@ class AppFixtures extends Fixture
 
         $questions = [];
 
-        for($i=0; $i<30; $i++){
+        $photosQuestion = [
+            'questionimagefixtures1.jpg',
+            'questionimagefixtures2.jpg',
+            'questionimagefixtures3.jpg',
+            'questionimagefixtures4.jpg',
+            'questionimagefixtures5.jpg',
+            'questionimagefixtures6.jpg',
+            'questionimagefixtures7.jpg',
+            'questionimagefixtures8.jpg',
+            'questionimagefixtures9.jpg',
+            'questionimagefixtures10.jpg',
+            'questionimagefixtures11.jpg',
+            'questionimagefixtures12.jpg',
+            'questionimagefixtures13.jpg',
+            'questionimagefixtures14.jpg',
+            'questionimagefixtures15.jpg',
+            'questionimagefixtures16.jpg',
+            'questionimagefixtures17.jpg',
+            'questionimagefixtures18.jpg',
+            'questionimagefixtures19.jpg',
+            'questionimagefixtures20.jpg'
+        ];
+
+        $photosUser = [
+            'userimagefixtures1.jpg',
+            'userimagefixtures2.jpg',
+            'userimagefixtures3.jpg',
+            'userimagefixtures4.jpg',
+            'userimagefixtures5.jpg',
+            'userimagefixtures6.jpg',
+            'userimagefixtures7.jpg',
+            'userimagefixtures8.jpg',
+            'userimagefixtures9.jpg',
+            'userimagefixtures10.jpg',
+            'userimagefixtures11.jpg',
+            'userimagefixtures12.jpg',
+            'userimagefixtures13.jpg',
+            'userimagefixtures14.jpg',
+            'userimagefixtures15.jpg',
+            'userimagefixtures16.jpg',
+            'userimagefixtures17.jpg',
+            'userimagefixtures18.jpg',
+            'userimagefixtures19.jpg',
+            'userimagefixtures20.jpg',
+        ];
+
+        $categories = [
+            'Animaux',
+            'Architechture, ville, urbanisme',
+            'Art et culture',
+            'Cadeaux, objet',
+            'Cinéma, télévision, médias',
+            'Commerces et services de proximités',
+            'Communication, marketing, identité visuelle',
+            'Création, arts graphiques, photo',
+            'Education, études, formation',
+            'Entreprise, business, économie',
+            'High-tech, informatique, internet',
+            'Humour',
+            'Jeux vidéos, gaming',
+            'Maison, déco, design',
+            'Mode, look, style, tendance',
+            'Musique',
+            'Nature, environnement, écologie',
+            'Nourriture, gastronomie, alimentation',
+            'Passions, loisirs, hobbies',
+            'Personalité publique',
+            'Personnel, vie privée',
+            'Philosophie, éthique, morale',
+            'Santé, soins, bien-être',
+            'Science, recherche et technologie',
+            'Société, politique, vie publique',
+            'Sport',
+            'Vacances, voyage, tourisme',
+            'Véhicule, moyen de transport',
+            'Autre',
+        ];
+
+        for($i=0; $i<20; $i++){
             $user= new User();
             $user->setEmail($faker->email)
-            ->setPassword('password')
             ->setUsername($faker->userName);
 
+            $password = $this->passwordEncoder->encodePassword($user, "password");
+            $user->setPassword($password);
+
             $manager->persist($user);
+
+            
 
             $profile= new Profile();
             $profile->setFirstName($faker->firstName)
@@ -41,21 +135,27 @@ class AppFixtures extends Fixture
             ->setGender($faker->title)
             ->setJob($faker->jobTitle)
             ->setLanguage('Français')
-            ->setImageFile()
+            ->setFixturesImageName($photosUser[$i])
             ->setUser($user);
 
             $manager->persist($profile);
 
             $this->users[] = $user;
 
-            for($j=0; $j<mt_rand(0,10); $j++)
+            for($j=0; $j<mt_rand(0,20); $j++)
             {
                 $question = new Question();
                 $question->setQuestion($faker->sentence(mt_rand(5,15)).'?')
                 ->setViews(mt_rand(10,300))
-                ->setCategory('Autres')
+                ->setCategory($categories[mt_rand(0,28)])
                 ->setCreated($faker->dateTimeThisMonth)
-                ->setUser($user);
+                ->setUser($user)
+                ->setUpdatedAt($faker->dateTimeThisMonth);
+
+                if (mt_rand(0,2) == 0)
+                {
+                    $question->setFixturesImageName($photosQuestion[$j]);
+                }
 
                 $manager->persist($question);
 
@@ -63,7 +163,7 @@ class AppFixtures extends Fixture
             }
         }
 
-        for($k=0; $k<mt_rand(100,500); $k++)
+        for($k=0; $k<mt_rand(300,500); $k++)
         {
             $answer = new Answer();
             $answer->setQuestion($this->questions[mt_rand(0, count($this->questions)-1)])
@@ -79,6 +179,37 @@ class AppFixtures extends Fixture
             
             $manager->persist($questionLike);
         }
+
+        for($m=0; $m<50; $m++)
+        {
+            $participants = [];
+
+            $conversation = new Conversation();
+            $conversation->setName($faker->sentence(4))
+            ->setCreated($faker->dateTimeThisMonth);
+            
+            for ($n=0; $n<mt_rand(1,6); $n++)
+            {
+                $conversation->addParticipant($participant = $this->users[mt_rand(0, count($this->users)-1)]);
+                $participants[]=$participant;
+            }
+
+            $manager->persist($conversation);
+
+            for($p=0; $p<mt_rand(2,25); $p++)
+            {
+            $message = new Message();
+            $message->setSender($participants[mt_rand(0, count($participants)-1)])
+            ->setCreated($faker->dateTimeThisMonth)
+            ->setBody($faker->sentence(mt_rand(0,20)))
+            ->setConversation($conversation);
+            
+            $manager->persist($message);
+            }
+
+            
+        }
+
         $manager->flush();
     }
 }

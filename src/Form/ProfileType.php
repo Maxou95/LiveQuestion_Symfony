@@ -84,6 +84,8 @@ class ProfileType extends AbstractType
                 'label' => 'Photo de profil :',
                 'required'   => false,
                 'empty_data' => null,
+                'delete_label' => "Supprimer l'image",
+                'download_label' => ''
             ])
         ;
     }

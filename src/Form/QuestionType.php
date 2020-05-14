@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class QuestionType extends AbstractType
 {
@@ -34,33 +36,40 @@ class QuestionType extends AbstractType
                     'Animaux' => 'Animaux',
                     'Architechture, ville, urbanisme' => 'Architechture, ville, urbanisme',
                     'Art et culture' => 'Art et culture',
-                    'CO' => 'Cadeaux, objet',
-                    'CTM' => 'Cinéma, télévision, médias',
-                    'CSP' => 'Commerces et services de proximités',
-                    'CMI' => 'Communication, markting, identité visuelle',
-                    'CAP' => 'Création, arts graphiques, photo',
-                    'EEF' => 'Education, études, formation',
-                    'EBE' => 'Entreprise, business, économie',
-                    'HII' => 'High-tech, informatique, internet',
-                    'H' => 'Humour',
-                    'JV' => 'Jeux vidéos, gaming',
-                    'MDD' => 'Maison, déco, design',
-                    'MLST' => 'Mode, look, style, tendance',
-                    'M' => 'Musique',
-                    'NEE' => 'Nature, environnement, écologie',
-                    'NGA' => 'Nourriture, gastronomie, alimentation',
-                    'PLH' => 'Passions, loisirs, hobbies',
-                    'PP' => 'Personalité publique',
-                    'PVP' => 'Personnel, vie privée',
-                    'PEM' => 'Philosophie, éthique, morale',
-                    'SSBE' => 'Santé, soins, bien-être',
-                    'SRT' => 'Science, recherche et technologie',
-                    'SPVP' => 'Société, politique, vie publique',
-                    'S' => 'Sport',
-                    'VVT' => 'Vacances, voyage, tourisme',
-                    'VMT' => 'Véhicule, moyen de transport',
-                    'Z' => 'Autre',
+                    'Cadeaux, objet' => 'Cadeaux, objet',
+                    'Cinéma, télévision, médias' => 'Cinéma, télévision, médias',
+                    'Commerces et services de proximités' => 'Commerces et services de proximités',
+                    'Communication, markting, identité visuelle' => 'Communication, markting, identité visuelle',
+                    'Création, arts graphiques, photo' => 'Création, arts graphiques, photo',
+                    'Education, études, formation' => 'Education, études, formation',
+                    'Entreprise, business, économie' => 'Entreprise, business, économie',
+                    'High-tech, informatique, internet' => 'High-tech, informatique, internet',
+                    'Humour' => 'Humour',
+                    'Jeux vidéos, gaming' => 'Jeux vidéos, gaming',
+                    'Maison, déco, design' => 'Maison, déco, design',
+                    'Mode, look, style, tendance' => 'Mode, look, style, tendance',
+                    'Musique' => 'Musique',
+                    'Nature, environnement, écologie' => 'Nature, environnement, écologie',
+                    'Nourriture, gastronomie, alimentation' => 'Nourriture, gastronomie, alimentation',
+                    'Passions, loisirs, hobbies' => 'Passions, loisirs, hobbies',
+                    'Personalité publique' => 'Personalité publique',
+                    'Personnel, vie privée' => 'Personnel, vie privée',
+                    'Philosophie, éthique, morale' => 'Philosophie, éthique, morale',
+                    'Santé, soins, bien-être' => 'Santé, soins, bien-être',
+                    'Science, recherche et technologie' => 'Science, recherche et technologie',
+                    'Société, politique, vie publique' => 'Société, politique, vie publique',
+                    'Sport' => 'Sport',
+                    'Vacances, voyage, tourisme' => 'Vacances, voyage, tourisme',
+                    'Véhicule, moyen de transport' => 'Véhicule, moyen de transport',
+                    'Autre' => 'Autre',
                 ],
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => "Photo d'illustration",
+                'required'   => false,
+                'empty_data' => null,
+                'delete_label' => "Supprimer l'image",
+                'download_label' => ''
             ])
             ->add('submit', SubmitType::class, [
                 'label' => "Poser votre question"

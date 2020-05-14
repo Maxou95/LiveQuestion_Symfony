@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle conversation{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        {{form_start(conversationForm)}}
+            {{form_widget(conversationForm)}}
+        {{form_end(conversationForm)}}
+    {% else %}
+    <p class="alert-livequestion">Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
+    {% endif %}
+{% endblock %}

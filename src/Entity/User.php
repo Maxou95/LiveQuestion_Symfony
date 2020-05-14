@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints;
+use FOS\MessageBundle\Model\ParticipantInterface;
 
 
 /**
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints;
  * @UniqueEntity(fields={"username"}, message="Ce nom d'utilisateur est déja pris.")
  * @UniqueEntity(fields={"email"}, message="Cette adresse email est déja utilisée par un autre compte.")
  */
-class User implements UserInterface
+class User implements UserInterface, ParticipantInterface
 {
     /**
      * @ORM\Id()
@@ -69,7 +70,7 @@ class User implements UserInterface
     private $profile;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Conversation::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Conversation::class, mappedBy="participants")
      */
     private $conversations;
 
@@ -267,6 +268,34 @@ class User implements UserInterface
         // set the owning side of the relation if necessary
         if ($profile->getUser() !== $this) {
             $profile->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): self
+    {
+        if ($this->conversations->contains($conversation)) {
+            $this->conversations->removeElement($conversation);
+            $conversation->removeParticipant($this);
         }
 
         return $this;

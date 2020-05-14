@@ -12,47 +12,44 @@
 <div class="row">
     <div class="col-10 offset-1">
         {% for question in questions %}
-            <div class="card mb-3">
-                <div class="card-body bg-light">
-                    <div class="row">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-6 text-center">
-                                    {{ question.answers|length }}
-                                    <br>
-                                    <small>Réponses</small>
-                                </div>
-                                <div class="col-6 text-center">
-                                    {{ question.views }}
-                                    <br>
-                                    <small>Vues</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-7">
-                            <h5 class="card-title"><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h5>
-                            <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("m/d/Y h:i") }}</p>
-                        </div>
-                        <div class="col">
-                            <form method="POST" class="btn livequestion" action="{{path('admin_delete_question',{'id':question.id})}}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette question ?')">
-                                <input type="hidden" name="_method" value="delete">
-                                <input type="hidden" name="_token" value="{{csrf_token('delete' ~ question.id)}}">
-                                <input type="submit" class="btn livequestion" value="Supprimer">
-                            </form>
-                        </div>
+            <div class="question">
+                    <div class="question-header">
+                        <a href="{{ path('app_user', { 'id': question.user.id }) }}">
+                        {% if question.user.profile.image.name is not null %}
+                            <img src="{{ asset(vich_uploader_asset(question.user.profile, 'imageFile')) }}" height="40" width="40" alt="">
+                        {% elseif question.user.profile.fixturesImageName is not null %}
+                            <img src="{{asset('images/fixtures/users/' ~ question.user.profile.fixturesImageName  )}}" height="40" width="40" alt="">
+                        {% else %}
+                            <img src="{{ asset('images/profil-picture-illustration.png') }}" height="40" width="40" alt="">
+                        {% endif %}
+                        </a>
+                        <p class="question-info"><a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username}}</a> | {{ question.created|date("d/m/Y H:i", "Europe/Paris") }}</p>
+                        <p class="question-category"><i class="fas fa-tag"></i> {{question.category}}</p>
                     </div>
-                </div>
-            </div>
+                    <div class="question-body">
+                        <h3><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h3>
+                        <a href="{{ path('app_question', { 'id': question.id }) }}">
+                        {% if question.image.name is not null %}
+                            <img src="{{ asset(vich_uploader_asset(question, 'imageFile')) }}" class="question-photo" alt="">
+                        {% elseif question.fixturesImageName is not null %}
+                            <img src="{{asset('images/fixtures/questions/' ~ question.fixturesImageName  )}}" class="question-photo" alt="">
+                        {% endif %}
+                        </a>
+                    </div>
+                    <div class="question-footer-admin">
+                        <form method="POST" class="" action="{{path('admin_delete_question',{'id':question.id})}}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette question ?')">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="_token" value="{{csrf_token('delete' ~ question.id)}}">
+                            <input type="submit" class="btn btn-delete btn-livequestion" value="Supprimer">
+                        </form>
+                    </div>
+                </div> 
         {% else %}
             <div class="text-center alert alert-livequestion">Pas de questions !</div>
         {% endfor %}
     </div>
 </div>
 {% else %}
-<div class="card mb-3">
-<div class="card-body bg-light">
-    <p>Bienvenu sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
-</div>
-</div>       
+    <p class="alert-livequestion">Bienvenu sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
 {% endif %}
 {% endblock %}

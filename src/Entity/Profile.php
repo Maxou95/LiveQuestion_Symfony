@@ -106,6 +106,11 @@ class Profile implements Serializable
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $fixturesImageName;
+
     public function __construct()
     {
         $this->image = new EmbeddedFile();
@@ -310,5 +315,17 @@ class Profile implements Serializable
             $this->id,
             $this->image,
             ) = unserialize($serialized, array('allowed_classes' => false));
+    }
+
+    public function getFixturesImageName(): ?string
+    {
+        return $this->fixturesImageName;
+    }
+
+    public function setFixturesImageName(string $fixturesImageName): self
+    {
+        $this->fixturesImageName = $fixturesImageName;
+
+        return $this;
     }
 }

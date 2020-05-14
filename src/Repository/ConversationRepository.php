@@ -19,22 +19,17 @@ class ConversationRepository extends ServiceEntityRepository
         parent::__construct($registry, Conversation::class);
     }
 
-    // /**
-    //  * @return Conversation[] Returns an array of Conversation objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findByUserId($value)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.user = :val')
             ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('q.created', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Conversation

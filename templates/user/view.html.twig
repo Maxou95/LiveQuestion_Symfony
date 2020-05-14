@@ -3,65 +3,113 @@
 {% block title %}Profil de l'utilisateur {{user.username}}{% endblock %}
 
 {% block body %}
-{% for message in app.flashes('success')%}
-<div class="alert alert-livequestion">
-    {{message}}
-</div>
-{% endfor %}
-<div class="card mb-3">
-    <div class="card-body bg-light">
-        <div class="row">
-            <div class="col text-center">
-                <img src="{{ asset('images/profil-picture-illustration.png') }}" class="profil-picture"></img>
-            </div>
-            <div class="col-8">
-                <h6><strong>Pseudo : </strong>{{user.username}}</h6>
-            </div>
-            {% if app.user.id == user.id %}
-                <div class="col">
-                    <form method="POST" class="btn livequestion" action="{{path('app_user_delete',{'id':user.id})}}" onsubmit="return confirm('Voulez-vous vraiment supprimer votre profil ?')">
-                        <input type="hidden" name="_method" value="delete">
-                        <input type="hidden" name="_token" value="{{csrf_token('delete' ~ user.id)}}">
-                        <input type="submit" class="btn livequestion" value="Supprimer">
-                    </form>
-                </div>
-            {% endif %}
+    {% if app.user %}
+        {% for message in app.flashes('success')%}
+        <div class="alert alert-livequestion">
+            {{message}}
         </div>
-    </div>
-</div>
-<div class="card mb-3">
-    <div class="card-body bg-light text-center">
+        {% endfor %}
+        <div class="card mb-3 user-card">
+            <div class="row">
+                <div class="col text-center">
+                    {% if user.profile.image.name is not null %}
+                        <img src="{{ asset(vich_uploader_asset(user.profile, 'imageFile')) }}" class="profil-picture" alt="">
+                    {% elseif user.profile.fixturesImageName is not null %}
+                        <img src="{{asset('images/fixtures/users/' ~ user.profile.fixturesImageName  )}}"  class="profil-picture" alt="">
+                    {% else %}
+                        <img src="{{ asset('images/profil-picture-illustration.png') }}" class="profil-picture" alt="">
+                {% endif %}
+                </div>
+                <div class="col-8">
+                    <h6><strong>Pseudo : </strong>{{user.username}}</h6>
+                    {% if user.profile.firstName is not null %}
+                        <h6><strong>Prénom : </strong>{{user.profile.firstName}}</h6>
+                    {% endif %}
+                    {% if user.profile.lastName is not null %}
+                        <h6><strong>Nom : </strong>{{user.profile.lastName}}</h6>
+                    {% endif %}
+                    {% if user.profile.age is not null %}
+                        <h6><strong>Age : </strong>{{user.profile.age}} ans</h6>
+                    {% endif %}
+                    {% if user.profile.job is not null %}
+                        <h6><strong>Profession : </strong>{{user.profile.job}}</h6>
+                    {% endif %}
+                    {% if user.profile.address is not null %}
+                        <h6><strong>Adresse : </strong>{{user.profile.address}}</h6>
+                    {% endif %}
+                    {% if user.profile.zipcode is not null %}
+                        <h6><strong>Code postal : </strong>{{user.profile.zipcode}}</h6>
+                    {% endif %}
+                    {% if user.profile.city is not null %}
+                        <h6><strong>Ville : </strong>{{user.profile.city}}</h6>
+                    {% endif %}
+                    {% if user.profile.country is not null %}
+                        <h6><strong>Pays : </strong>{{user.profile.country|country_name('fr')}}</h6>
+                    {% endif %}
+                    {% if user.profile.language is not null %}
+                        <h6><strong>Langue : </strong>{{user.profile.language}}</h6>
+                    {% endif %}
+                </div>
+                <div class="col-12">
+                    {% if user.profile.description is not null %}
+                        <h6 class="bio">"{{user.profile.description}}"</h6>
+                    {% endif %}
+                </div>
+                {% if app.user.id == user.id %}
+                        <form method="POST" class="col-12" action="{{path('app_user_delete',{'id':user.id})}}" onsubmit="return confirm('Voulez-vous vraiment supprimer votre profil ?')">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="_token" value="{{csrf_token('delete' ~ user.id)}}">
+                            <input type="submit" class="btn btn-delete btn-livequestion" value="Supprimer mon compte">
+                        </form>
+                {% endif %}
+            </div>
+        </div>
+        
         <h5>Dernières questions</h5>
-    </div>
-</div>
 
-{% for question in questions %}
-<div class="card mb-3">
-    <div class="card-body bg-light">
-        <div class="row">
-            <div class="col">
-                <div class="row">
-                    <div class="col-6 text-center">
-                        {{ question.answers|length }}
-                        <br>
-                        <small>Réponses</small>
-                    </div>
-                    <div class="col-6 text-center">
-                        {{ question.views }}
-                        <br>
-                        <small>Vues</small>
-                    </div>
-                </div>
+        {% for question in questions %}
+        <div class="question">
+            <div class="question-header">
+                <a href="{{ path('app_user', { 'id': question.user.id }) }}">
+                {% if question.user.profile.image.name is not null %}
+                    <img src="{{ asset(vich_uploader_asset(question.user.profile, 'imageFile')) }}" height="40" width="40" alt="">
+                {% elseif question.user.profile.fixturesImageName is not null %}
+                    <img src="{{asset('images/fixtures/users/' ~ question.user.profile.fixturesImageName  )}}" height="40" width="40" alt="">
+                {% else %}
+                    <img src="{{ asset('images/profil-picture-illustration.png') }}" height="40" width="40" alt="">
+                {% endif %}
+                </a>
+                <p class="question-info"><a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username}}</a> | {{ question.created|date("d/m/Y H:i", "Europe/Paris") }}</p>
+                <p class="question-category"><i class="fas fa-tag"></i> {{question.category}}</p>
             </div>
-            <div class="col-9">
-                <h5 class="card-title"><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h5>
-                <p class="card-text text-muted small">posée par <a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username }}</a> |  {{ question.created|date("m/d/Y h:i") }}</p>
+            <div class="question-body">
+                <h3><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h3>
+                <a href="{{ path('app_question', { 'id': question.id }) }}">
+                {% if question.image.name is not null %}
+                    <img src="{{ asset(vich_uploader_asset(question, 'imageFile')) }}" class="question-photo" alt="">
+                {% elseif question.fixturesImageName is not null %}
+                    <img src="{{asset('images/fixtures/questions/' ~ question.fixturesImageName  )}}" class="question-photo" alt="">
+                {% endif %}
+                </a>
+            </div>
+            <div class="question-footer">
+                <p>
+                    {{ question.views }}   <i class="fas fa-eye"></i>     |     {{ question.answers|length }}   <i class="fas fa-comments"></i>    |
+                    <a href="{{ path('app_question_like', {'id': question.id })}}" class="js-question-like">
+                        <span class="js-question-likes">{{ question.questionLikes | length }}</span>   
+                        {% if question.isLikedByUser(app.user) %}
+                            <i class="fas fa-thumbs-up"></i>
+                        {% else %}
+                            <i class="far fa-thumbs-up"></i>
+                        {% endif %}
+                    </a>
+                </p>
             </div>
         </div>
-    </div>
-</div>
-{% else %}
-<div class="text-center alert alert-livequestion">Pas de questions !</div>
-{% endfor %}
-
+        {% else %}
+        <div class="text-center alert alert-livequestion">Pas de questions !</div>
+        {% endfor %}
+    {% else %}
+    <p class="alert-livequestion">Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
+    {% endif %}
 {% endblock %}

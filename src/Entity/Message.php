@@ -18,19 +18,54 @@ class Message
     private $id;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $body;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $sender;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Conversation::class, inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $conversation;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $body;
+
+    /**
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $created;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getSender(): ?User
+    {
+        return $this->sender;
+    }
+
+    public function setSender(?User $sender): self
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
+    public function getConversation(): ?Conversation
+    {
+        return $this->conversation;
+    }
+
+    public function setConversation(?Conversation $conversation): self
+    {
+        $this->conversation = $conversation;
+
+        return $this;
     }
 
     public function getBody(): ?string
@@ -45,14 +80,14 @@ class Message
         return $this;
     }
 
-    public function getSender(): ?User
+    public function getCreated(): ?\DateTimeInterface
     {
-        return $this->sender;
+        return $this->created;
     }
 
-    public function setSender(?User $sender): self
+    public function setCreated(\DateTimeInterface $created): self
     {
-        $this->sender = $sender;
+        $this->created = $created;
 
         return $this;
     }

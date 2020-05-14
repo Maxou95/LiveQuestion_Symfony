@@ -4,24 +4,16 @@
 
 {% block body %}
 {% if app.user.id == user.id %}
-<div class="row">
-    <div class="col-6 offset-3">
-
-        <div class="card bg-light">
-            <div class="card-body">
-                <h1 class="h3 mb-3 font-weight-normal text-center">Modification du profil</h1>
-
-                {{ form_start(form) }}
-                    {{ form_row(form, { 'label': ' ' }) }}
-                    <div class="row buttons">
-                        <a href="{{path('app_user', { 'id': user.id })}}" class="btn btn-light col-6" >Annuler</a>
-                        <input type="submit" value="Appliquer les modification" class="btn livequestion btn-block col-6"></input>
-                    </div>
-                    
-                {{ form_end(form) }}
-                
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8">
+        <h1 class="h3 mb-3 font-weight-normal text-center">Modification du profil</h1>
+        {{ form_start(form) }}
+            {{ form_row(form, { 'label': ' ' }) }}
+            <div class="row buttons">
+                <a href="{{path('app_user', { 'id': user.id })}}" class="btn btn-light col-6" >Annuler</a>
+                <input type="submit" value="Appliquer les modification" class="btn livequestion btn-block col-6"></input>
             </div>
-        </div>
+        {{ form_end(form) }}
     </div>
 </div>
 {% else %}
@@ -34,6 +26,7 @@
                     $(inputFile).parent()
                         .find('.custom-file-label')
                         .html(inputFile.files[0].name);
+                        $('.buttons').removeClass('mt-330');
                 });
 
         function filePreview(input) {
@@ -41,13 +34,13 @@
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     $('.preview').remove();
-                    $('.buttons').addClass('mt-330')
-                    $('<div class="col-8 offset-2"><img src="'+e.target.result+'"class="preview"/><div>').insertAfter('#user_profile_imageFile_file');
+                    $('.buttons').addClass('mt-330');
+                    $('<div class="col-8 offset-2"><img src="'+e.target.result+'"class="preview"/><div>').insertAfter('#profile_imageFile_file');
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        $("#user_profile_imageFile_file").change(function () {
+        $("#profile_imageFile_file").change(function () {
             filePreview(this);
         });
     </script>
