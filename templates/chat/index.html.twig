@@ -13,7 +13,7 @@
             {{form_widget(searchForm)}}
         {{form_end(searchForm)}}
         <div class="row justify-content-center">
-            <a class="btn btn-livequestion col-12 col-sm-11 col-md-10 col-lg-9" href="{{path('app_new_chat')}}">Nouvelle conversation</a>
+            <a class="btn btn-instantmessage col-12 col-sm-11 col-md-10 col-lg-9" href="{{path('app_new_chat')}}">Nouvelle conversation</a>
             {% if searchFormSubmitted == false %}
                 {% for conversation in app.user.conversations %}
                 <div class="col-12 col-sm-11 col-md-10 col-lg-9">
@@ -32,7 +32,7 @@
                             {% for message in conversation.messages %}
                                 {% if loop.last %}
                                     {% if message.sender.profile.image.name is not null %}
-                                    <img class="last-message-user-photo" src="{{ asset('images/profiles/' ~ message.sender.profile.image.name) }}"height="30" width="30" alt="">
+                                    <img class="last-message-user-photo" src="{{ asset('images/profiles/' ~ message.sender.profile.image.name) }}" height="30" width="30" alt="">
                                     {% elseif message.sender.profile.fixturesImageName is not null %}
                                     <img src="{{asset('images/fixtures/users/' ~ message.sender.profile.fixturesImageName  )}}" class="last-message-user-photo" height="30" width="30" alt="">
                                     {% else %}
@@ -77,7 +77,7 @@
                 </div> 
                 {% else %}
                     {% for message in app.flashes('error')%}
-                        <div class="alert alert-livequestion">
+                        <div class="alert alert-instantmessage">
                             {{message}}
                         </div>
                     {% endfor %}
@@ -85,7 +85,7 @@
             {% endif %}
         </div>
         {% else %}
-        <p>Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
+        <p>Bienvenue sur InstantMessage.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
     </div>    
     {% endif %}
 {% endblock %}

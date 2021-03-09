@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class MessageType extends AbstractType
 {
@@ -15,7 +16,22 @@ class MessageType extends AbstractType
     {
         $builder
             ->add('body', TextareaType::class, [
-                'label' => ' ',
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Ecrivez un nouveau message'
+
+                ]
+            ])
+            ->add('attachmentFile', VichImageType::class, [
+                'label' => false,
+                'required'   => false,
+                'empty_data' => null,
+                'delete_label' => "Supprimer la pièce jointe",
+                'download_label' => '',
+                'attr' => [
+                    'placeholder' => 'Choisissez un fichier'
+
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => "Envoyer"

@@ -31,6 +31,13 @@
                     {% endif %}
                     <div class="message sended">
                         <p>{{ message.body }}</p>
+                        {% if message.attachment.name is not null %}
+                            {% if message.attachment.mimeType == 'image/jpeg' or message.attachment.mimeType == 'image/png' %}
+                                <img src="{{ asset('attachments/' ~ message.attachment.name ) }}" alt="">
+                            {% else %}
+                                <i>Pièce jointe : <a href="{{ asset('attachments/' ~ message.attachment.name ) }}" target="_blank" download="{{ asset('attachments/' ~ message.attachment.name ) }}">{{ message.attachment.originalName }}</a></i>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 {% else %}
                     <p class="message-info message-info-left">{{message.sender.username}} | {{message.created|date("d/m/Y H:i", "Europe/Paris")}}</p>
@@ -43,6 +50,13 @@
                     {% endif %}                    
                     <div class="message received">
                         <p>{{ message.body }}</p>
+                        {% if message.attachment.name is not null %}
+                            {% if message.attachment.mimeType == 'image/jpeg' or message.attachment.mimeType == 'image/png' %}
+                                <img src="{{ asset('attachments/' ~ message.attachment.name ) }}" alt="">
+                            {% else %}
+                                <i>Pièce jointe : <a href="{{ asset('attachments/' ~ message.attachment.name ) }}" target="_blank" download="{{ asset('attachments/' ~ message.attachment.name ) }}">{{ message.attachment.originalName }}</a></i>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 {% endif %}
             {% endfor %}
@@ -51,11 +65,37 @@
             {{form_end(messageForm)}}
             <p id="anchor"></p>
         {% else %}
-        <p class="alert-livequestion">Vous n'etes pas autorisé à voir cette conversation.</p>
+        <p class="alert-instantmessage">Vous n'etes pas autorisé à voir cette conversation.</p>
         {% endif %}
     {% else %}
-
-    <p class="alert-livequestion">Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
-    
+    <p class="alert-instantmessage">Bienvenue sur InstantMessage.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
     {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+    <script>
+        $('.custom-file-input').on('change', function(event) {
+            var inputFile = event.currentTarget;
+            $(inputFile).parent()
+                .find('.custom-file-label')
+                .html(inputFile.files[0].name);
+            $('.buttons').removeClass('mt-330');
+        });
+
+        function filePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.preview').remove();
+                    $('.buttons').addClass('mt-330');
+                    $('<div class="col-8 offset-2"><img src="'+e.target.result+'"class="preview"/><div>').insertAfter('#profile_imageFile_file');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#profile_imageFile_file").change(function () {
+            filePreview(this);
+        });
+    </script>
 {% endblock %}

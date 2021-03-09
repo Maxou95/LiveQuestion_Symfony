@@ -22,18 +22,12 @@
                 <div class="col-5">
                     <h3 style="margin-left: 15px;">{{ user.username }}</h3>
                 </div>
-                <div class="col-3">
-                    <p><i class="fas fa-arrow-circle-up orange-icon"></i> {{ user.questions|length}} <span>questions posées</span></p>
-                </div>
-                <div class="col-3">
-                    <p><i class="fas fa-arrow-circle-down pink-icon"></i> {{ user.answers|length}} <span>avis exprimés</span></p>
-                </div>
             </div>
         </div>
     </a>
     {% else %}
         {% for message in app.flashes('error')%}
-        <div class="alert alert-livequestion">
+        <div class="alert alert-instantmessage">
             {{message}}
         </div>
         {% endfor %}

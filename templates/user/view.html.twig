@@ -7,7 +7,7 @@
     <div class="col-12 col-sm-11 col-md-10 col-lg-9">
     {% if app.user %}
         {% for message in app.flashes('success')%}
-        <div class="alert alert-livequestion">
+        <div class="alert alert-instantmessage">
             {{message}}
         </div>
         {% endfor %}
@@ -63,58 +63,13 @@
                         <form method="POST" class="col-12" action="{{path('app_user_delete',{'id':user.id})}}" onsubmit="return confirm('Voulez-vous vraiment supprimer votre profil ?')">
                             <input type="hidden" name="_method" value="delete">
                             <input type="hidden" name="_token" value="{{csrf_token('delete' ~ user.id)}}">
-                            <input type="submit" class="btn btn-delete btn-livequestion" value="Supprimer mon compte">
+                            <input type="submit" class="btn btn-delete btn-instantmessage" value="Supprimer mon compte">
                         </form>
                 {% endif %}
             </div>
         </div>
-        
-        <h5>Dernières questions</h5>
-
-        {% for question in questions %}
-        <div class="question">
-            <div class="question-header">
-                <a href="{{ path('app_user', { 'id': question.user.id }) }}">
-                {% if question.user.profile.image.name is not null %}
-                    <img src="{{ asset(vich_uploader_asset(question.user.profile, 'imageFile')) }}" height="40" width="40" alt="">
-                {% elseif question.user.profile.fixturesImageName is not null %}
-                    <img src="{{asset('images/fixtures/users/' ~ question.user.profile.fixturesImageName  )}}" height="40" width="40" alt="">
-                {% else %}
-                    <img src="{{ asset('images/profil-picture-illustration.png') }}" height="40" width="40" alt="">
-                {% endif %}
-                </a>
-                <p class="question-info"><a href="{{ path('app_user', { 'id': question.user.id }) }}">{{ question.user.username}}</a> | {{ question.created|date("d/m/Y H:i", "Europe/Paris") }}</p>
-                <p class="question-category"><i class="fas fa-tag"></i> {{question.category}}</p>
-            </div>
-            <div class="question-body">
-                <h3><a href="{{ path('app_question', { 'id': question.id }) }}">{{ question.question }}</a></h3>
-                <a href="{{ path('app_question', { 'id': question.id }) }}">
-                {% if question.image.name is not null %}
-                    <img src="{{ asset(vich_uploader_asset(question, 'imageFile')) }}" class="question-photo" alt="">
-                {% elseif question.fixturesImageName is not null %}
-                    <img src="{{asset('images/fixtures/questions/' ~ question.fixturesImageName  )}}" class="question-photo" alt="">
-                {% endif %}
-                </a>
-            </div>
-            <div class="question-footer">
-                <p>
-                    {{ question.views }}   <i class="fas fa-eye"></i>     |     {{ question.answers|length }}   <i class="fas fa-comments"></i>    |
-                    <a href="{{ path('app_question_like', {'id': question.id })}}" class="js-question-like">
-                        <span class="js-question-likes">{{ question.questionLikes | length }}</span>   
-                        {% if question.isLikedByUser(app.user) %}
-                            <i class="fas fa-thumbs-up"></i>
-                        {% else %}
-                            <i class="far fa-thumbs-up"></i>
-                        {% endif %}
-                    </a>
-                </p>
-            </div>
-        </div>
-        {% else %}
-        <div class="text-center alert alert-livequestion">Pas de questions !</div>
-        {% endfor %}
     {% else %}
-    <p class="alert-livequestion">Bienvenue sur LiveQuestion.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
+    <p class="alert-instantmessage">Bienvenue sur InstantMessage.fr ! Pour profiter de toutes les fonctionnalités, veuillez vous inscrire ou vous connecter</p>
     {% endif %}
     </div>
 </div>

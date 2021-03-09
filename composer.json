@@ -1,6 +1,6 @@
 {
-    "name": "livequestion",
-    "description": "Projet de groupe LiveQuestion",
+    "name": "instantmessage",
+    "description": "Projet de groupe",
     "type": "project",
     "license": "proprietary",
     "require": {

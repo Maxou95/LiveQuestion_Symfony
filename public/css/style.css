@@ -19,20 +19,20 @@ img
     object-fit: cover;
 }
 
-.livequestion
+.instantmessage
 {
-    background-color: #ec008c;
+    background-color: #1a335c;
     color: #fff;
 }
 
-.btn-livequestion
+.btn-instantmessage
 {
-    background-color: #ec008c;
+    background-color: #1a335c;
     color: #fff;
     border-radius: 50px;
 }
 
-.btn-livequestion:hover
+.btn-instantmessage:hover
 {
     background-color: #FDB813;
     color: #fff;
@@ -59,9 +59,9 @@ input,select, textarea
 }
 
 
-.alert-livequestion
+.alert-instantmessage
 {
-    background-color: #ffdfeb;
+    background-color: #d1def2;
     padding: 50px 100px;
     width: 100%;
     text-align: justify;
@@ -69,7 +69,7 @@ input,select, textarea
 
 .fas.fa-heart
 {
-    color: #ec008c;
+    color: #1a335c;
 }
 
 
@@ -96,14 +96,14 @@ input,select, textarea
 }
 .dropdown-menu a 
 {
-    color: #ec008c !important;
+    color: #1a335c !important;
 }
 
 @media (max-width:991px)
 {
     .dropdown-menu
     {
-        background-color: #ec008c;
+        background-color: #1a335c;
         border: 0px;
         margin-left: 20px;
     }
@@ -142,7 +142,7 @@ input,select, textarea
 
 .navbar
 {
-    box-shadow:  14px 14px 7px #dfe0e1, 
+    box-shadow:  14px 14px 7px #dfe0e1;
 }
 
 .navbar-brand
@@ -150,200 +150,14 @@ input,select, textarea
     display: inline-block;
     height: 40px;
     width: 195px;
-    background: url(../images/livequestion.png) center no-repeat;
+    background: url(../images/instantmessage2.gif) center no-repeat;
     background-size: contain;
 }
 
 .navbar-brand:hover
 {
-    background: url(../images/livequestionhover2.png) center no-repeat;
+    background: url(../images/instantmessage3.gif) center no-repeat;
     background-size: contain;
-}
-
-.question,.answer {
-    width: 100%;
-    border-radius: 30px;
-    color: #495057;
-    padding: 2% 3% 2% 2%;
-    margin: 20px auto;
-    transition-duration: 1000ms;
-    border :1px solid #fff;
-    box-shadow:  7px 7px 14px #dfe0e1, 
-    -7px -7px 14px #ffffff;
-    background-color: #fff;
-}
-
-.question:hover {
-    box-shadow:  14px 14px 7px #dfe0e1, 
-    -14px -14px 7px #ffffff;
-   transition-duration: 1000ms;
-}
-
-.question img, .answer img
-{
-    border-radius: 50px;
-    display: inline-block;
-}
-
-.question-header, .answer-header
-{
-    width: 100%;
-    height: 45px;
-    border-bottom: 1px solid #edf2f4;
-}
-
-.question-header a, .answer-header a 
-{
-    color: #495057;
-}
-
-.question-header a:hover, .answer-header a:hover 
-{
-    color: #ec008c;
-    text-decoration: none;
-}
-
-.question-body
-{
-    display: block;
-    width: 100%;
-    text-align: justify;
-}
-
-.question-body h3
-{
-    padding: 20px 40px;
-}
-
-.question-footer
-{
-    width: 100%;
-    text-align: right;
-    height: 15px;
-    border-top: 1px solid #edf2f4;
-}
-
-.question-footer-admin
-{
-    width: 100%;
-    text-align: right;
-    height: 45px;
-    border-top: 1px solid #edf2f4;
-}
-
-.question-info,.answer-info
-{
-    display: inline-block;
-}
-
-.question-category
-{
-    float: right;
-    margin-top: 0.4em;
-}
-
-.question-category-small
-{
-    float: left;
-    display: none;
-}
-
-.question-vrl /* view responses likes */
-{
-    float: right;
-}
-
-@media (max-width: 1000px) {
-    .question-category
-    {
-        display: none;
-    }
-    .question-category-small
-    {
-        float: left;
-        display: inline;
-    }
-}
-
-@media(max-width: 800px)
-{
-    .question-category-small
-    {
-        float: left;
-        display: inline;
-        font-size: 0.7em;
-        margin-top: 0.3em;
-    }
-}
-
-.preview-question
-{
-    margin: 20px auto;
-    display: block;
-    border: 1px solid black;
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-}
-
-.question-photo
-{
-    width: 100%;
-    border-radius: 30px !important;
-    padding: 0;
-    margin-bottom: 5px;
-}
-
-#question_category
-{
-    border-radius: 30px;
-}
-
-#question_submit
-{
-    width: 100%;
-    background-color: #ec008c;
-    transition-duration: 1000ms;
-    border-radius: 30px;
-    border: #fff;
-}
-
-.answer p
-{
-    margin-bottom: 0;
-}
-
-.answer-body{
-    display: block;
-    width: 100%;
-    padding: 5px 40px 0px 40px;
-    text-align: justify;
-}
-
-#answer_body
-{
-    box-shadow:  7px 7px 14px #dfe0e1, 
-    -7px -7px 14px #ffffff;
-    border-radius: 30px;
-    padding: 10px 30px;
-}
-
-#answer_submit
-{
-    margin: 0 auto;
-    background-color: #ec008c;
-    border: #fff;
-    width: 100%;
-    text-align: center;
-    transition-duration: 1000ms;
-    border-radius: 30px;
-}
-
-#answer_submit:hover
-{
-    background-color: #FDB813;
-    transition-duration: 1000ms;
-
 }
 
 h3 a
@@ -354,7 +168,7 @@ h3 a
 
 h3 a:hover
 {
-    color: #ec008c;
+    color: #1a335c;
     text-decoration: none;
 }
 
@@ -389,6 +203,19 @@ h3 a:hover
     margin: 0 !important;
 }
 
+.message > img
+{
+    max-width: 100%;
+    object-fit: contain;
+}
+
+i a {
+    color: #FDB813;
+}
+
+i a:hover {
+    color: #5eb5e0;
+}
 .sended
 {
     float: right;
@@ -397,7 +224,7 @@ h3 a:hover
 
 .received
 {
-    background-color: #ec008c;
+    background-color: #1a335c;
     color: #eee;
     float: left;
 }
@@ -450,7 +277,7 @@ option
 #message_submit
 {
     margin: 0px auto;
-    background-color: #ec008c;
+    background-color: #1a335c;
     color: #fff;
     border-radius: 20px;
     border: none;
@@ -498,7 +325,7 @@ a
 
 a:hover
 {
-    color: #ec008c;
+    color: #1a335c;
     text-decoration: none;
 
 }
@@ -533,7 +360,7 @@ a:hover
 
 .pink-icon
 {
-    color: #ec008c;
+    color: #1a335c;
 }
 
 @media (max-width:991px)
@@ -561,7 +388,7 @@ a:hover
 {
     width: 100%;
     text-align: center;
-    background-color: #ec008c;
+    background-color: #1a335c;
     color: #fff;
     margin: 10px auto;
     border-radius: 30px;
@@ -727,9 +554,9 @@ h5
 
 /* SCROLLBAR */
 ::-webkit-scrollbar {
-    width: 0.5%;
-    height: 0.5%;
-    background: #edf2f4;
+    width: 3px;
+    height: 10px;
+    color: #edf2f4;
 }
   
 ::-webkit-scrollbar-thumb {
@@ -752,5 +579,5 @@ border-radius: 5px;
 
 .btn-white:hover
 {
-    color: #ec008c;
+    color: #1a335c;
 }

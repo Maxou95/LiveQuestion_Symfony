@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\ProfileType;
 use App\Form\UserSearchType;
 use App\Form\UserUpdateType;
-use App\Repository\QuestionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +14,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
 
 class UserController extends AbstractController
 {
@@ -30,13 +27,9 @@ class UserController extends AbstractController
         $users = $userRepository->findAll();
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
-            
 
             $search = $searchForm->getData()->getUsername();
-
-
             $datas = $userRepository->search($search);
-
 
             if ($datas == null) {
                 $this->addFlash('error', 'Aucun utilisateur ne correspond à vos critères de recherche.');
@@ -57,13 +50,10 @@ class UserController extends AbstractController
     /**
      * @Route("/user/{id}", name="app_user", requirements={"id"="\d+"})
      */
-    public function view(User $user, QuestionRepository $questionRepository)
+    public function view(User $user)
     {
-        $questions = $questionRepository->findByUserId($user->getId());
-
         return $this->render('user/view.html.twig', [
             "user" => $user,
-            "questions" => $questions,
         ]);
     }
 

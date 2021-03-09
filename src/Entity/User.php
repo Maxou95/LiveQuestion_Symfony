@@ -50,26 +50,6 @@ class User implements UserInterface, ParticipantInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="user", orphanRemoval=true)
-     */
-    private $questions;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="user", orphanRemoval=true)
-     */
-    private $answers;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\QuestionLike", mappedBy="user")
-     */
-    private $questionLikes;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AnswerLike", mappedBy="user")
-     */
-    private $answerLikes;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Profile", mappedBy="user", cascade={"persist", "remove"})
      */
     private $profile;
@@ -81,10 +61,6 @@ class User implements UserInterface, ParticipantInterface
 
     public function __construct()
     {
-        $this->questions = new ArrayCollection();
-        $this->answers = new ArrayCollection();
-        $this->questionLikes = new ArrayCollection();
-        $this->answerLikes = new ArrayCollection();
         $this->conversations = new ArrayCollection();
     }
 
@@ -164,123 +140,9 @@ class User implements UserInterface, ParticipantInterface
         
     }
 
-    /**
-     * @return Collection|Question[]
-     */
-    public function getQuestions(): Collection
-    {
-        return $this->questions;
-    }
-
-    public function addQuestion(Question $question): self
-    {
-        if (!$this->questions->contains($question)) {
-            $this->questions[] = $question;
-            $question->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeQuestion(Question $question): self
-    {
-        if ($this->questions->contains($question)) {
-            $this->questions->removeElement($question);
-            if ($question->getUser() === $this) {
-                $question->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Answer[]
-     */
-    public function getAnswers(): Collection
-    {
-        return $this->answers;
-    }
-
-    public function addAnswer(Answer $answer): self
-    {
-        if (!$this->answers->contains($answer)) {
-            $this->answers[] = $answer;
-            $answer->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAnswer(Answer $answer): self
-    {
-        if ($this->answers->contains($answer)) {
-            $this->answers->removeElement($answer);
-            if ($answer->getUser() === $this) {
-                $answer->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function setUsername(string $username): self
     {
         $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|QuestionLike[]
-     */
-    public function getQuestionsLikes(): Collection
-    {
-        return $this->questionLikes;
-    }
-
-    public function addQuestionsLike(QuestionLike $questionLikes): self
-    {
-        if (!$this->questionLikes->contains($questionLikes)) {
-            $this->questionLikes[] = $questionLikes;
-            $questionLikes->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeQuestionsLike(QuestionLike $questionLikes): self
-    {
-        if ($this->questionLikes->contains($questionLikes)) {
-            $this->questionLikes->removeElement($questionLikes);
-            // set the owning side to null (unless already changed)
-            if ($questionLikes->getUser() === $this) {
-                $questionLikes->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function addAnswersLike(AnswerLike $answerLikes): self
-    {
-        if (!$this->answerLikes->contains($answerLikes)) {
-            $this->answerLikes[] = $answerLikes;
-            $answerLikes->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAnswersLike(AnswerLike $answerLikes): self
-    {
-        if ($this->answerLikes->contains($answerLikes)) {
-            $this->answerLikes->removeElement($answerLikes);
-            // set the owning side to null (unless already changed)
-            if ($answerLikes->getUser() === $this) {
-                $answerLikes->setUser(null);
-            }
-        }
 
         return $this;
     }

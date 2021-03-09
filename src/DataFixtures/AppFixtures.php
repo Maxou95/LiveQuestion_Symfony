@@ -32,31 +32,6 @@ class AppFixtures extends Fixture
 
         $users = [];
 
-        $questions = [];
-
-        $photosQuestion = [
-            'questionimagefixtures1.jpg',
-            'questionimagefixtures2.jpg',
-            'questionimagefixtures3.jpg',
-            'questionimagefixtures4.jpg',
-            'questionimagefixtures5.jpg',
-            'questionimagefixtures6.jpg',
-            'questionimagefixtures7.jpg',
-            'questionimagefixtures8.jpg',
-            'questionimagefixtures9.jpg',
-            'questionimagefixtures10.jpg',
-            'questionimagefixtures11.jpg',
-            'questionimagefixtures12.jpg',
-            'questionimagefixtures13.jpg',
-            'questionimagefixtures14.jpg',
-            'questionimagefixtures15.jpg',
-            'questionimagefixtures16.jpg',
-            'questionimagefixtures17.jpg',
-            'questionimagefixtures18.jpg',
-            'questionimagefixtures19.jpg',
-            'questionimagefixtures20.jpg'
-        ];
-
         $photosUser = [
             'userimagefixtures1.jpg',
             'userimagefixtures2.jpg',
@@ -80,47 +55,15 @@ class AppFixtures extends Fixture
             'userimagefixtures20.jpg',
         ];
 
-        $categories = [
-            'Animaux',
-            'Architechture, ville, urbanisme',
-            'Art et culture',
-            'Cadeaux, objet',
-            'Cinéma, télévision, médias',
-            'Commerces et services de proximités',
-            'Communication, marketing, identité visuelle',
-            'Création, arts graphiques, photo',
-            'Education, études, formation',
-            'Entreprise, business, économie',
-            'High-tech, informatique, internet',
-            'Humour',
-            'Jeux vidéos, gaming',
-            'Maison, déco, design',
-            'Mode, look, style, tendance',
-            'Musique',
-            'Nature, environnement, écologie',
-            'Nourriture, gastronomie, alimentation',
-            'Passions, loisirs, hobbies',
-            'Personalité publique',
-            'Personnel, vie privée',
-            'Philosophie, éthique, morale',
-            'Santé, soins, bien-être',
-            'Science, recherche et technologie',
-            'Société, politique, vie publique',
-            'Sport',
-            'Vacances, voyage, tourisme',
-            'Véhicule, moyen de transport',
-            'Autre',
-        ];
-
         $user=new User();
-        $user->setEmail('administrateur@livequestion.fr')
-        ->setUsername('LiveQuestion')
+        $user->setEmail('administrateur@messagerie.fr')
+        ->setUsername('Admin')
         ->setRoles(['ROLE_ADMIN']);
-        $password = $this->passwordEncoder->encodePassword($user, "QuestionLive");
+        $password = $this->passwordEncoder->encodePassword($user, "Password");
         $user->setPassword($password);
         $profile = new Profile();
-        $profile->setFirstName('Live')
-        ->setLastName('Question');
+        $profile->setFirstName('Admin')
+        ->setLastName('Inistrateur');
         $user->setProfile($profile);
 
         $manager->persist($user);
@@ -132,12 +75,9 @@ class AppFixtures extends Fixture
             $user->setEmail($faker->email)
             ->setUsername($faker->userName);
 
-            $password = $this->passwordEncoder->encodePassword($user, "password");
+            $password = $this->passwordEncoder->encodePassword($user, "Password");
             $user->setPassword($password);
-
             $manager->persist($user);
-
-            
 
             $profile= new Profile();
             $profile->setFirstName($faker->firstName)
@@ -157,50 +97,8 @@ class AppFixtures extends Fixture
             $manager->persist($profile);
 
             $this->users[] = $user;
-
-            for($j=0; $j<mt_rand(0,20); $j++)
-            {
-                $question = new Question();
-                $question->setQuestion(rtrim($faker->sentence(mt_rand(5,15)),'.').' ?')
-                ->setViews(mt_rand(10,300))
-                ->setCategory($categories[mt_rand(0,28)])
-                ->setCreated($faker->dateTimeThisMonth)
-                ->setUser($user)
-                ->setUpdatedAt($faker->dateTimeThisMonth);
-
-                if (mt_rand(0,2) == 0)
-                {
-                    $question->setFixturesImageName($photosQuestion[$j]);
-                }
-
-                $manager->persist($question);
-
-                $this->questions[]=$question;
-            }
         }
 
-        for($k=0; $k<mt_rand(300,500); $k++)
-        {
-            $answer = new Answer();
-            $answer->setQuestion($this->questions[mt_rand(0, count($this->questions)-1)])
-            ->setUser($this->users[mt_rand(0, count($this->users)-1)])
-            ->setCreated($faker->dateTimeThisMonth)
-            ->setBody($faker->sentence(mt_rand(5,15)));
-
-            $manager->persist($answer);
-
-            $answerLike = new AnswerLike();
-            $answerLike->setAnswer($answer)
-            ->setUser($this->users[mt_rand(0, count($this->users)-1)]);
-
-            $manager->persist($answerLike);
-
-            $questionLike = new QuestionLike();
-            $questionLike->setQuestion($this->questions[mt_rand(0, count($this->questions)-1)])
-            ->setUser($this->users[mt_rand(0, count($this->users)-1)]);
-            
-            $manager->persist($questionLike);
-        }
 
         for($m=0; $m<50; $m++)
         {

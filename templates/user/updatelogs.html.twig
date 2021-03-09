@@ -11,13 +11,13 @@
             {{ form_row(form, { 'label': ' ' }) }}
             <div class="row buttons">
                 <a href="{{path('app_user', { 'id': user.id })}}" class="btn btn-white col-6" >Annuler</a>
-                <input type="submit" value="Appliquer les modification" class="btn btn-livequestion btn-block col-6"></input>
+                <input type="submit" value="Appliquer les modification" class="btn btn-instantmessage btn-block col-6"></input>
             </div>
         {{ form_end(form) }}
     </div>
 </div>
 {% else %}
-<div class="text-center alert alert-livequestion">Vous n'êtes pas autorisé(e) à modifier ces informations.</div>
+<div class="text-center alert alert-instantmessage">Vous n'êtes pas autorisé(e) à modifier ces informations.</div>
 {% endif %}
 
 {% endblock %}
